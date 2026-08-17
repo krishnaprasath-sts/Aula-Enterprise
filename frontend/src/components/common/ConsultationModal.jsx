@@ -236,41 +236,50 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
             </div>
 
           {/* Modal Content */}
-          <div style={{ padding: '3rem 2rem', maxWidth: '1990px', margin: '0 auto', paddingBottom: '6rem' }}>
+          <div style={{ padding: '3rem 2rem', maxWidth: '1800px', margin: '0 auto', paddingBottom: '6rem' }}>
             {submitted ? (
-                <div style={{ textAlign: 'center', padding: '2.5rem 1rem' }}>
+                <div style={{ 
+                  textAlign: 'center', 
+                  padding: '4rem 2.5rem', 
+                  maxWidth: '500px', 
+                  margin: '2rem auto',
+                  background: '#F8FAFC',
+                  borderRadius: '24px',
+                  border: '1px solid #E2E8F0',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.05)'
+                }}>
                   <div style={{
-                    width: '72px',
-                    height: '72px',
+                    width: '88px',
+                    height: '88px',
                     borderRadius: '50%',
-                    backgroundColor: 'var(--brand-blue-light)',
-                    color: 'var(--brand-blue)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    color: 'var(--brand-emerald)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 1.5rem auto'
                   }}>
-                    <CheckCircle2 size={40} />
+                    <CheckCircle2 size={48} />
                   </div>
-                  <h3 style={{ fontSize: '1.6rem', color: 'var(--dark-navy)', marginBottom: '0.75rem' }}>
+                  <h3 style={{ fontSize: '1.75rem', color: 'var(--dark-navy)', marginBottom: '1rem', fontWeight: 800 }}>
                     Consultation Request Received
                   </h3>
-                  <p style={{ color: 'var(--text-secondary)', maxWidth: '420px', margin: '0 auto 1.75rem auto' }}>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '1.05rem', lineHeight: 1.6, maxWidth: '420px', margin: '0 auto 2rem auto' }}>
                     Thank you. Our Singapore customs specialists will review your shipment details and reach out shortly.
                   </p>
                   <button
                     onClick={resetForm}
                     className="btn-primary"
-                    style={{ width: '100%', justifyContent: 'center' }}
+                    style={{ width: '100%', justifyContent: 'center', padding: '1rem', fontSize: '1.05rem', borderRadius: '12px' }}
                   >
                     Done
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-                  <div className="form-row-2" style={{ gap: '2.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                         Full Name *
                       </label>
                       <input
@@ -282,17 +291,18 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: `1px solid ${errors.fullName ? '#ef4444' : 'var(--border-light)'}`,
-                          fontSize: '0.95rem',
-                          outline: 'none'
+                          fontSize: '1rem',
+                          outline: 'none',
+                          background: '#F8FAFC'
                         }}
                       />
-                      {errors.fullName && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.fullName}</span>}
+                      {errors.fullName && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.4rem', display: 'block' }}>{errors.fullName}</span>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                         Company Name
                       </label>
                       <input
@@ -304,19 +314,20 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: '1px solid var(--border-light)',
-                          fontSize: '0.95rem',
-                          outline: 'none'
+                          fontSize: '1rem',
+                          outline: 'none',
+                          background: '#F8FAFC'
                         }}
                       />
                     </div>
                   </div>
 
-                  <div className="form-row-2" style={{ gap: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                        Email *
                       </label>
                       <input
@@ -328,17 +339,18 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: `1px solid ${errors.email ? '#ef4444' : 'var(--border-light)'}`,
-                          fontSize: '0.95rem',
-                          outline: 'none'
+                          fontSize: '1rem',
+                          outline: 'none',
+                          background: '#F8FAFC'
                         }}
                       />
-                      {errors.email && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.email}</span>}
+                      {errors.email && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.4rem', display: 'block' }}>{errors.email}</span>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                         Phone Number *
                       </label>
                       <input
@@ -350,20 +362,21 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: `1px solid ${errors.phone ? '#ef4444' : 'var(--border-light)'}`,
-                          fontSize: '0.95rem',
-                          outline: 'none'
+                          fontSize: '1rem',
+                          outline: 'none',
+                          background: '#F8FAFC'
                         }}
                       />
-                      {errors.phone && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.phone}</span>}
+                      {errors.phone && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.4rem', display: 'block' }}>{errors.phone}</span>}
                     </div>
                   </div>
 
-                  <div className="form-row-2" style={{ gap: '1.5rem' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                         WhatsApp Number
                       </label>
                       <input
@@ -375,16 +388,17 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: '1px solid var(--border-light)',
-                          fontSize: '0.95rem',
-                          outline: 'none'
+                          fontSize: '1rem',
+                          outline: 'none',
+                          background: '#F8FAFC'
                         }}
                       />
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                         Service Required
                       </label>
                       <input
@@ -395,19 +409,19 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                         className="consultation-input"
                         style={{
                           width: '100%',
-                          padding: '0.75rem 1rem',
-                          borderRadius: '8px',
+                          padding: '0.85rem 1rem',
+                          borderRadius: '10px',
                           border: '1px solid var(--border-light)',
-                          fontSize: '0.95rem',
+                          fontSize: '1rem',
                           outline: 'none',
-                          backgroundColor: '#FFFFFF'
+                          background: '#F8FAFC'
                         }}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                       Upload Documents (All formats supported, Max 1GB)
                     </label>
                     <input
@@ -419,13 +433,14 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                       className="consultation-input"
                       style={{
                         width: '100%',
-                        padding: '0.75rem 1rem',
-                        borderRadius: '8px',
+                        padding: '0.85rem 1rem',
+                        borderRadius: '10px',
                         border: `1px solid ${errors.file ? '#ef4444' : 'var(--border-light)'}`,
-                        fontSize: '0.95rem',
+                        fontSize: '1rem',
                         outline: 'none',
                         cursor: 'pointer',
-                        boxSizing: 'border-box'
+                        boxSizing: 'border-box',
+                        background: '#F8FAFC'
                       }}
                     />
                     {errors.file && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.file}</span>}
@@ -450,24 +465,26 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
                       Remarks
                     </label>
                     <textarea
                       name="message"
-                      rows={3}
+                      rows={4}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Briefly describe your cargo, origin/destination, timeline or specific permit requirement..."
                       className="consultation-input"
                       style={{
                         width: '100%',
-                        padding: '0.75rem 1rem',
-                        borderRadius: '8px',
+                        padding: '1rem',
+                        borderRadius: '10px',
                         border: '1px solid var(--border-light)',
-                        fontSize: '0.95rem',
+                        fontSize: '1rem',
                         outline: 'none',
-                        resize: 'vertical'
+                        resize: 'vertical',
+                        background: '#F8FAFC',
+                        lineHeight: '1.5'
                       }}
                     />
                   </div>

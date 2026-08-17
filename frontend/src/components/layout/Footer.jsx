@@ -24,7 +24,6 @@ const Footer = () => {
     { label: 'About Us', path: '/about' },
     { label: 'Permit Declaration', path: '/permit-declaration' },
     { label: 'Services', path: '/services' },
-    { label: 'Trade Insights (Blog)', path: '/blog' },
     { label: 'Contact Us', path: '/contact' }
   ];
 
@@ -163,7 +162,7 @@ const Footer = () => {
             <p style={{ margin: 0, color: '#CBD5E1' }}>
               © {new Date().getFullYear()} {contactInfo.companyName}. All rights reserved.
             </p>
-            {/* <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
               <span style={{ color: '#CBD5E1' }}>
                 Developed by: <a href="https://saitechnosolutions.com/" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ color: '#CBD5E1', textDecoration: 'underline' }}>Sai Techno Solutions</a>
               </span>
@@ -186,7 +185,7 @@ const Footer = () => {
               >
                 <ArrowUp size={18} />
               </button>
-            </div> */}
+            </div>
           </div>
 
         </div>
