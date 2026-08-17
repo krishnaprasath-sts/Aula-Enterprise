@@ -1,0 +1,136 @@
+.footer {
+  background-color: var(--primary-navy);
+  color: #a0aec0;
+  padding: 120px 0 0 0;
+  font-family: var(--font-body);
+  position: relative;
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+  position: relative;
+  z-index: 1;
+}
+
+.massiveText {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 10vw, 9rem);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.03);
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 80px;
+  letter-spacing: -2px;
+  white-space: nowrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-xl);
+  margin-bottom: 80px;
+}
+
+.logo {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--bg-white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.logo span {
+  color: var(--secondary-emerald);
+}
+
+.description {
+  max-width: 350px;
+  line-height: 1.7;
+}
+
+.colTitle {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--bg-white);
+  margin-bottom: 32px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.link {
+  color: #a0aec0;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  position: relative;
+  width: fit-content;
+}
+
+.link:hover {
+  color: var(--secondary-emerald);
+  padding-left: 8px;
+}
+
+.bottomBar {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 32px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.socials {
+  display: flex;
+  gap: 24px;
+}
+
+.socialIcon {
+  color: #a0aec0;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.socialIcon:hover {
+  color: var(--bg-white);
+  background-color: var(--secondary-emerald);
+  border-color: var(--secondary-emerald);
+  transform: translateY(-5px);
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .bottomBar {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+}
