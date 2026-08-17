@@ -167,6 +167,38 @@ export const servicesApi = {
   }
 };
 
+// Permit Types APIs
+export const permitTypesApi = {
+  getAll: async () => {
+    try {
+      return await apiRequest('/permit-types', 'GET');
+    } catch (e) {
+      throw e;
+    }
+  },
+  create: async (permitType) => {
+    try {
+      return await apiRequest('/permit-types', 'POST', permitType);
+    } catch (e) {
+      throw e;
+    }
+  },
+  update: async (id, permitType) => {
+    try {
+      return await apiRequest(`/permit-types/${id}`, 'PUT', permitType);
+    } catch (e) {
+      throw e;
+    }
+  },
+  delete: async (id) => {
+    try {
+      return await apiRequest(`/permit-types/${id}`, 'DELETE');
+    } catch (e) {
+      throw e;
+    }
+  }
+};
+
 // Contact Info APIs
 export const contactApi = {
   get: async () => {

@@ -359,8 +359,8 @@ const Contact = () => {
 
                     <div className="form-row-2">
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
-                          Full Name *
+                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                          Full Name <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                         </label>
                         <input
                           type="text"
@@ -403,8 +403,8 @@ const Contact = () => {
 
                     <div className="form-row-2">
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
-                          Work Email *
+                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                          Email Address <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                         </label>
                         <input
                           type="email"
@@ -424,8 +424,8 @@ const Contact = () => {
                         {errors.email && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.3rem', display: 'block' }}>{errors.email}</span>}
                       </div>
                       <div>
-                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
-                          Phone Number *
+                        <label style={{ display: 'block', fontSize: '0.88rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.4rem' }}>
+                          Phone Number <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                         </label>
                         <input
                           type="tel"

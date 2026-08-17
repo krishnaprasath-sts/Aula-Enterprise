@@ -79,7 +79,7 @@ const Hero = () => {
             <img 
               src={heroData.mediaUrl || '/src/assets/hero.png'}
               alt="Hero Background"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+              className="hero-media"
             />
           ) : (
             <video
@@ -88,7 +88,7 @@ const Hero = () => {
               loop
               muted
               playsInline
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center center' }}
+              className="hero-media"
             />
           )}
         </div>
@@ -175,6 +175,21 @@ const Hero = () => {
             transform: scale(1.1);
             background-color: var(--brand-blue);
             border-color: var(--brand-blue);
+          }
+          
+          .hero-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+          }
+
+          @media (max-width: 768px) {
+            .hero-media {
+              /* Keep it as cover to avoid ugly black bars, 
+                 but we can adjust the object-position if a specific side needs focus */
+              object-position: center center;
+            }
           }
         `}</style>
       </section>

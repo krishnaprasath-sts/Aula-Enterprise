@@ -881,6 +881,53 @@ tr:last-child td:last-child {
   transition: all var(--transition-fast);
 }
 
+.form-input[type="file"] {
+  padding: 8px 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: #F8FAFC;
+}
+
+.form-input[type="file"]::-webkit-file-upload-button {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--brand-purple);
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-right: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.form-input[type="file"]::-webkit-file-upload-button:hover {
+  background: var(--brand-purple);
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.25);
+}
+
+.form-input[type="file"]::file-selector-button {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--brand-purple);
+  border: none;
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-right: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.form-input[type="file"]::file-selector-button:hover {
+  background: var(--brand-purple);
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(124, 58, 237, 0.25);
+}
+
 .form-input:focus, .form-textarea:focus, .form-select:focus {
   border-color: var(--brand-purple);
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);

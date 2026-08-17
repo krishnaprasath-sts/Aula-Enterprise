@@ -1,38 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, ShieldCheck } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
 import FadeUp from '../common/FadeUp';
 import TextReveal from '../common/TextReveal';
 
-import s1Img from '../../assets/import.jpg';
-import s2Img from '../../assets/export.jpg';
-import s3Img from '../../assets/gst.jpg';
-import s4Img from '../../assets/transhipment.jpg';
-import s5Img from '../../assets/strategic goods image.png';
-import s6Img from '../../assets/Certificate of Origin (COO) Support.png';
-import s7Img from '../../assets/shut out permit image.png';
-import s8Img from '../../assets/hand carry permit image.png';
-import s9Img from '../../assets/re-export permit image.jpg';
-import s10Img from '../../assets/major export permit image.jpg';
-import s11Img from '../../assets/transportation image.png';
+
 
 const PermitTypes = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPermit, setSelectedPermit] = useState('');
 
-  const permitCategories = [
-    { code: 'IN', title: 'Import Permit', desc: 'Required for bringing commercial goods into Singapore customs territory, verifying GST, duties, and controlling agency permits.', img: s1Img },
-    { code: 'OUT', title: 'Export Permit', desc: 'Official authorization for outbound shipments, strategic items, re-exports, or outward processed goods leaving Singapore.', img: s2Img },
-    { code: 'GST', title: 'GST Permit', desc: 'Goods and Services Tax declaration, exemption filings, temporary import relief, and MES scheme reporting.', img: s3Img },
-    { code: 'TR', title: 'Transhipment Permit', desc: 'Documentation for cargo moving through Singapore ports to third-country destinations without entering local commerce.', img: s4Img },
-    { code: 'STR', title: 'Strategic Goods Permit', desc: 'Strict compliance for dual-use technology, military hardware, or controlled items under Strategic Goods Control Act.', img: s5Img },
-    { code: 'COO', title: 'Certificate of Origin', desc: 'Preferential & Non-Preferential COO documentation under Singapore Free Trade Agreements (FTAs).', img: s6Img },
-    { code: 'SO', title: 'Shut-Out Permit', desc: 'Declarations for export cargo cancelled, rejected at port terminals, or returned to local warehouses.', img: s7Img },
-    { code: 'HC', title: 'Hand Carry Permit', desc: 'Customs declaration for high-value components, jewelry, or prototypes carried via passenger baggage.', img: s8Img },
-    { code: 'RX', title: 'Re-Export Permit', desc: 'Permits for foreign-origin goods imported temporarily for warehousing or re-packing prior to export.', img: s9Img },
-    { code: 'MES', title: 'Major Exporter Scheme', desc: 'IRAS-approved GST suspension management for major Singapore export and manufacturing enterprises.', img: s10Img },
-    { code: 'TMD', title: 'Transport Mode Declarations', desc: 'Customized permits for Sea Freight, Air Cargo, Land Trucking (Causeway/Tuas), and Parcel Post.', img: s11Img }
-  ];
+  const [permitCategories, setPermitCategories] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/permit-types')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          // Filter out inactive permits and sort by order_index
+          const activePermits = data.filter(p => p.status === 'Active');
+          setPermitCategories(activePermits);
+        }
+      })
+      .catch(err => console.error("Error fetching permit types:", err));
+  }, []);
 
   return (
     <>
@@ -87,8 +78,8 @@ const PermitTypes = () => {
                       border: '1px solid var(--border-subtle)'
                     }}>
                       <div style={{
-                        width: '85px',
-                        height: '85px',
+                        width: '149px',
+                        height: '149px',
                         flexShrink: 0,
                         borderRadius: '50%',
                         padding: '3px',
@@ -97,7 +88,7 @@ const PermitTypes = () => {
                         marginBottom: '1.25rem'
                       }}>
                         <img
-                          src={permit.img}
+                          src={permit.image || permit.img}
                           alt={permit.title}
                           style={{
                             width: '100%',
@@ -138,7 +129,7 @@ const PermitTypes = () => {
                         lineHeight: 1.6,
                         margin: 0
                       }}>
-                        {permit.desc}
+                        {permit.description || permit.desc}
                       </p>
 
                       <button style={{

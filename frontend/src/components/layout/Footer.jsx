@@ -162,30 +162,7 @@ const Footer = () => {
             <p style={{ margin: 0, color: '#CBD5E1' }}>
               © {new Date().getFullYear()} {contactInfo.companyName}. All rights reserved.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-              <span style={{ color: '#CBD5E1' }}>
-                Developed by: <a href="https://saitechnosolutions.com/" target="_blank" rel="noopener noreferrer" className="footer-link" style={{ color: '#CBD5E1', textDecoration: 'underline' }}>Sai Techno Solutions</a>
-              </span>
-              <button
-                onClick={scrollToTop}
-                className="scroll-top-btn"
-                style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                  color: '#CBD5E1',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                  marginLeft: '0.5rem'
-                }}
-                aria-label="Scroll to top"
-              >
-                <ArrowUp size={18} />
-              </button>
-            </div>
+            
           </div>
 
         </div>

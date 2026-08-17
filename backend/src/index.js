@@ -166,6 +166,18 @@ const initDb = async () => {
       // Ignore if column already exists
     }
 
+    await conn.query(`
+      CREATE TABLE IF NOT EXISTS permit_types (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        image VARCHAR(255),
+        status VARCHAR(50) DEFAULT 'Active',
+        order_index INT DEFAULT 0,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
+
     // Seed default admin if table is empty
     const [users] = await conn.query('SELECT * FROM users WHERE email = ?', ['admin@aula.sg']);
     if (users.length === 0) {
@@ -211,6 +223,18 @@ const initDb = async () => {
       console.log('Seeded contact_info table with default data.');
     }
 
+    // Seed permit_types if empty
+    const [pts] = await conn.query('SELECT * FROM permit_types');
+    if (pts.length === 0) {
+      for (const p of memoryStore.permitTypes) {
+        await conn.query(
+          'INSERT INTO permit_types (title, description, image, order_index, status) VALUES (?, ?, ?, ?, ?)',
+          [p.title, p.description, p.image, p.order_index, p.status]
+        );
+      }
+      console.log('Seeded permit_types table with default data.');
+    }
+
     conn.release();
   } catch (err) {
     isDbConnected = false;
@@ -220,6 +244,19 @@ const initDb = async () => {
 
 // In-Memory store for fast fallback
 const memoryStore = {
+  permitTypes: [
+    { id: 1, code: 'IN', title: 'Import Permit', description: 'Required for bringing commercial goods into Singapore customs territory, verifying GST, duties, and controlling agency permits.', image: '/src/assets/import.jpg', order_index: 1, status: 'Active' },
+    { id: 2, code: 'OUT', title: 'Export Permit', description: 'Official authorization for outbound shipments, strategic items, re-exports, or outward processed goods leaving Singapore.', image: '/src/assets/export.jpg', order_index: 2, status: 'Active' },
+    { id: 3, code: 'GST', title: 'GST Permit', description: 'Goods and Services Tax declaration, exemption filings, temporary import relief, and MES scheme reporting.', image: '/src/assets/gst.jpg', order_index: 3, status: 'Active' },
+    { id: 4, code: 'TR', title: 'Transhipment Permit', description: 'Documentation for cargo moving through Singapore ports to third-country destinations without entering local commerce.', image: '/src/assets/transhipment.jpg', order_index: 4, status: 'Active' },
+    { id: 5, code: 'STR', title: 'Strategic Goods Permit', description: 'Strict compliance for dual-use technology, military hardware, or controlled items under Strategic Goods Control Act.', image: '/src/assets/strategic goods image.png', order_index: 5, status: 'Active' },
+    { id: 6, code: 'COO', title: 'Certificate of Origin', description: 'Preferential & Non-Preferential COO documentation under Singapore Free Trade Agreements (FTAs).', image: '/src/assets/Certificate of Origin (COO) Support.png', order_index: 6, status: 'Active' },
+    { id: 7, code: 'SO', title: 'Shut-Out Permit', description: 'Declarations for export cargo cancelled, rejected at port terminals, or returned to local warehouses.', image: '/src/assets/shut out permit image.png', order_index: 7, status: 'Active' },
+    { id: 8, code: 'HC', title: 'Hand Carry Permit', description: 'Customs declaration for high-value components, jewelry, or prototypes carried via passenger baggage.', image: '/src/assets/hand carry permit image.png', order_index: 8, status: 'Active' },
+    { id: 9, code: 'RX', title: 'Re-Export Permit', description: 'Permits for foreign-origin goods imported temporarily for warehousing or re-packing prior to export.', image: '/src/assets/re-export permit image.jpg', order_index: 9, status: 'Active' },
+    { id: 10, code: 'MES', title: 'Major Exporter Scheme', description: 'IRAS-approved GST suspension management for major Singapore export and manufacturing enterprises.', image: '/src/assets/major export permit image.jpg', order_index: 10, status: 'Active' },
+    { id: 11, code: 'TMD', title: 'Transport Mode Declarations', description: 'Customized permits for Sea Freight, Air Cargo, Land Trucking (Causeway/Tuas), and Parcel Post.', image: '/src/assets/transportation image.png', order_index: 11, status: 'Active' }
+  ],
   heroBanners: [
     {
       id: 1,
@@ -591,6 +628,78 @@ app.delete('/api/services/:id', authenticateJWT, async (req, res) => {
     res.json({ message: 'Service deleted successfully' });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Permit Types Routes ---
+app.get('/api/permit-types', async (req, res) => {
+  if (isDbConnected) {
+    try {
+      const [rows] = await pool.query('SELECT * FROM permit_types ORDER BY order_index ASC');
+      res.json(rows);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+    res.json(memoryStore.permitTypes.sort((a, b) => a.order_index - b.order_index));
+  }
+});
+
+app.post('/api/permit-types', authenticateJWT, async (req, res) => {
+  const { title, description, image, status, order_index } = req.body;
+  if (isDbConnected) {
+    try {
+      const [result] = await pool.query(
+        'INSERT INTO permit_types (title, description, image, status, order_index) VALUES (?, ?, ?, ?, ?)',
+        [title, description, image, status, order_index]
+      );
+      res.status(201).json({ id: result.insertId, ...req.body });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+    const newPt = { id: Date.now(), ...req.body };
+    memoryStore.permitTypes.push(newPt);
+    res.status(201).json(newPt);
+  }
+});
+
+app.put('/api/permit-types/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  const { title, description, image, status, order_index } = req.body;
+  if (isDbConnected) {
+    try {
+      await pool.query(
+        'UPDATE permit_types SET title = ?, description = ?, image = ?, status = ?, order_index = ? WHERE id = ?',
+        [title, description, image, status, order_index, id]
+      );
+      res.json({ id, ...req.body });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+    const idx = memoryStore.permitTypes.findIndex(p => p.id == id);
+    if (idx !== -1) {
+      memoryStore.permitTypes[idx] = { id: Number(id), ...req.body };
+      res.json(memoryStore.permitTypes[idx]);
+    } else {
+      res.status(404).json({ error: 'Permit type not found' });
+    }
+  }
+});
+
+app.delete('/api/permit-types/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  if (isDbConnected) {
+    try {
+      await pool.query('DELETE FROM permit_types WHERE id = ?', [id]);
+      res.json({ message: 'Deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+    memoryStore.permitTypes = memoryStore.permitTypes.filter(p => p.id != id);
+    res.json({ message: 'Deleted successfully' });
   }
 });
 

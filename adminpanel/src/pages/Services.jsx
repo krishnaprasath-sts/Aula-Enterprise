@@ -481,8 +481,8 @@ const Services = () => {
               <div className="modal-body">
                 <div className="form-grid">
                   <div className="form-group full-width">
-                    <label className="form-label">
-                      Service Title <span style={{ color: 'red' }}>*</span>
+                    <label className="form-label" style={{ fontWeight: 900, color: 'var(--text-primary)' }}>
+                      Service Title <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                     </label>
                     <input 
                       type="text" 

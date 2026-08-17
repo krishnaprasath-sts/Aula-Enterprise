@@ -237,51 +237,51 @@ const PermitProcess = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
-                  style={{
-                    maxWidth: '850px',
-                    margin: '0 auto',
-                    backgroundColor: 'var(--brand-blue-subtle)',
-                    border: '1px solid var(--border-blue)',
-                    borderRadius: '20px',
-                    padding: '2.25rem 2.5rem',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    flexWrap: 'wrap',
-                    gap: '1.5rem',
-                    boxShadow: 'var(--shadow-sm)'
-                  }}
-                  className="process-card-padding"
-                >
-                  <div style={{ flex: 1, minWidth: '280px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
-                      <span style={{
-                        padding: '0.2rem 0.6rem',
-                        backgroundColor: 'var(--brand-blue)',
-                        color: '#FFFFFF',
-                        borderRadius: '4px',
-                        fontSize: '0.75rem',
-                        fontWeight: 700
-                      }}>
-                        Step {steps[activeStep].num}
-                      </span>
-                      <h4 style={{ fontSize: '1.25rem', color: 'var(--dark-navy)', margin: 0 }}>
-                        {steps[activeStep].title}
-                      </h4>
-                    </div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', margin: 0, lineHeight: 1.6 }}>
-                      {steps[activeStep].detail}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => setModalOpen(true)}
-                    className="btn-primary"
-                    style={{ padding: '0.8rem 1.5rem', fontSize: '0.9rem' }}
+                    style={{
+                      maxWidth: '850px',
+                      margin: '0 auto',
+                      backgroundColor: 'var(--brand-blue-subtle)',
+                      border: '1px solid var(--border-blue)',
+                      borderRadius: '20px',
+                      padding: '2.25rem 2.5rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      flexWrap: 'wrap',
+                      gap: '1.5rem',
+                      boxShadow: 'var(--shadow-sm)'
+                    }}
+                    className="process-card-padding"
                   >
-                    Get Started <ArrowRight size={18} />
-                  </button>
-                </motion.div>
+                    <div style={{ flex: 1, minWidth: '280px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '0.5rem' }}>
+                        <span style={{
+                          padding: '0.2rem 0.6rem',
+                          backgroundColor: 'var(--brand-blue)',
+                          color: '#FFFFFF',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          fontWeight: 700
+                        }}>
+                          Step {steps[activeStep].num}
+                        </span>
+                        <h4 style={{ fontSize: '1.25rem', color: 'var(--dark-navy)', margin: 0 }}>
+                          {steps[activeStep].title}
+                        </h4>
+                      </div>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '1.02rem', margin: 0, lineHeight: 1.6 }}>
+                        {steps[activeStep].detail}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => setModalOpen(true)}
+                      className="btn-primary"
+                      style={{ padding: '0.8rem 1.5rem', fontSize: '0.9rem' }}
+                    >
+                      Get Started <ArrowRight size={18} />
+                    </button>
+                  </motion.div>
                 </AnimatePresence>
               </FadeUp>
             </div>

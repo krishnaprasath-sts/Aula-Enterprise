@@ -9,6 +9,8 @@ import Contact from './pages/Contact';
 import ContactSubmissions from './pages/ContactSubmissions';
 import Enquiry from './pages/Enquiry';
 
+import PermitTypes from './pages/PermitTypes';
+
 function App() {
   return (
     <Router>
@@ -28,6 +30,7 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="hero" element={<Hero />} />
           <Route path="services" element={<Services />} />
+          <Route path="permit-types" element={<PermitTypes />} />
           <Route path="contact" element={<Contact />} />
           <Route path="contact-submissions" element={<ContactSubmissions />} />
           <Route path="enquiry" element={<Enquiry />} />

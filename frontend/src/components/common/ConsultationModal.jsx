@@ -279,8 +279,8 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
-                        Full Name *
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
+                        Full Name <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                       </label>
                       <input
                         type="text"
@@ -327,8 +327,8 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
-                       Email *
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
+                       Email <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                       </label>
                       <input
                         type="email"
@@ -350,8 +350,8 @@ const ConsultationModal = ({ isOpen, onClose, initialService = 'Permit Declarati
                       {errors.email && <span style={{ color: '#ef4444', fontSize: '0.8rem', marginTop: '0.4rem', display: 'block' }}>{errors.email}</span>}
                     </div>
                     <div>
-                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 600, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
-                        Phone Number *
+                      <label style={{ display: 'block', fontSize: '0.9rem', fontWeight: 900, color: 'var(--dark-navy)', marginBottom: '0.5rem' }}>
+                        Phone Number <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '4px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                       </label>
                       <input
                         type="tel"

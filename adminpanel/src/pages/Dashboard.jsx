@@ -85,7 +85,7 @@ const Dashboard = () => {
             {servicesCount} Services
           </div>
           <div style={{ fontSize: '0.84rem', color: 'var(--brand-blue)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
-            Configure CRUD <ArrowRight size={14} />
+            View All <ArrowRight size={14} />
           </div>
         </Link>
 

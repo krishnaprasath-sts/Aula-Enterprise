@@ -28,7 +28,8 @@ const Navbar = () => {
   ];
 
   const isHome = location.pathname === '/';
-  const textColor = (isHome && !isScrolled) ? '#FFFFFF' : 'var(--dark-navy)';
+  const isSolid = isScrolled || mobileMenuOpen;
+  const textColor = (isHome && !isSolid) ? '#FFFFFF' : 'var(--dark-navy)';
 
   return (
     <>
@@ -43,14 +44,14 @@ const Navbar = () => {
           maxWidth: isScrolled ? '1200px' : '100%',
           zIndex: 100,
           transition: 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
-          backgroundColor: isScrolled ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)',
-          backdropFilter: isScrolled ? 'blur(20px)' : 'blur(0px)',
-          WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'blur(0px)',
-          boxShadow: isScrolled ? '0 10px 40px rgba(11, 18, 32, 0.08)' : '0 10px 40px rgba(11, 18, 32, 0)',
+          backgroundColor: isSolid ? 'rgba(255, 255, 255, 1)' : 'rgba(255, 255, 255, 0)',
+          backdropFilter: isSolid ? 'blur(20px)' : 'blur(0px)',
+          WebkitBackdropFilter: isSolid ? 'blur(20px)' : 'blur(0px)',
+          boxShadow: isSolid ? '0 10px 40px rgba(11, 18, 32, 0.08)' : '0 10px 40px rgba(11, 18, 32, 0)',
           border: '1px solid',
-          borderColor: isScrolled ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
+          borderColor: isSolid ? 'rgba(0, 0, 0, 0.05)' : 'transparent',
           borderRadius: isScrolled ? '24px' : '0px',
-          padding: isScrolled ? '0.4rem 0' : '1.35rem 0'
+          padding: isSolid ? '0.4rem 0' : '1.35rem 0'
         }}
       >
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -62,8 +63,8 @@ const Navbar = () => {
                 src="/src/assets/logo 2.png" 
                 alt="AULA Permits" 
                 style={{
-                  width: isScrolled ? '56px' : '84px',
-                  height: isScrolled ? '56px' : '84px',
+                  width: isSolid ? '56px' : '84px',
+                  height: isSolid ? '56px' : '84px',
                   borderRadius: '10px',
                   objectFit: 'cover',
                   transition: 'all 0.6s cubic-bezier(0.22, 1, 0.36, 1)'
@@ -167,20 +168,49 @@ const Navbar = () => {
             transition={{ duration: 0.25 }}
             style={{
               position: 'fixed',
-              top: '72px',
+              top: 0,
               left: 0,
               right: 0,
               bottom: 0,
               backgroundColor: '#FFFFFF',
-              zIndex: 99,
-              padding: '2rem 1.5rem',
+              zIndex: 105,
+              padding: '1.25rem 1.5rem 2rem',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'space-between',
               overflowY: 'auto'
             }}
           >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {/* Drawer Header */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
+              <img 
+                src="/src/assets/logo 2.png" 
+                alt="AULA Permits" 
+                style={{
+                  width: '64px',
+                  height: '64px',
+                  borderRadius: '10px',
+                  objectFit: 'cover'
+                }}
+              />
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  background: 'rgba(0, 0, 0, 0.05)',
+                  border: 'none',
+                  padding: '0.5rem',
+                  borderRadius: '50%',
+                  color: 'var(--dark-navy)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <X size={28} />
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
@@ -190,11 +220,11 @@ const Navbar = () => {
                     onClick={() => setMobileMenuOpen(false)}
                     style={{
                       fontFamily: 'var(--font-heading)',
-                      fontSize: '1.25rem',
+                      fontSize: '1.5rem',
                       fontWeight: isActive ? 700 : 500,
                       color: isActive ? 'var(--brand-blue)' : 'var(--dark-navy)',
-                      padding: '0.75rem 0',
-                      borderBottom: '1px solid var(--border-subtle)'
+                      padding: '1rem 0',
+                      borderBottom: '1px solid rgba(0,0,0,0.05)'
                     }}
                   >
                     {item.label}
@@ -204,14 +234,13 @@ const Navbar = () => {
             </div>
 
             <div style={{ paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   setModalOpen(true);
                 }}
                 className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center', padding: '1rem' }}
+                style={{ width: '100%', justifyContent: 'center', padding: '1.2rem', fontSize: '1.1rem' }}
               >
                 Get a Consultation <ArrowRight size={18} />
               </button>

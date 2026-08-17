@@ -114,9 +114,9 @@ const Login = () => {
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
           <div className="form-group">
-            <label className="form-label" style={{ color: '#475569', fontSize: '0.84rem', fontWeight: 600 }}>
+            <label className="form-label" style={{ color: '#0F172A', fontSize: '0.84rem', fontWeight: 900 }}>
               <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Mail size={14} color="var(--brand-purple)" /> Email Address
+                <Mail size={14} color="var(--brand-purple)" /> Email Address <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '2px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
               </span>
             </label>
             <input 
@@ -140,9 +140,9 @@ const Login = () => {
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <label className="form-label" style={{ color: '#475569', fontSize: '0.84rem', fontWeight: 600 }}>
+              <label className="form-label" style={{ color: '#0F172A', fontSize: '0.84rem', fontWeight: 900 }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Lock size={14} color="var(--brand-blue)" /> Password
+                  <Lock size={14} color="var(--brand-blue)" /> Password <span style={{ color: '#EF4444', fontWeight: 900, marginLeft: '2px', fontSize: '1.2rem', lineHeight: 1 }}>*</span>
                 </span>
               </label>
             </div>
