@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, ShieldCheck, X } from '
 import axios from 'axios';
 import FadeUp from '../components/common/FadeUp';
 import TextReveal from '../components/common/TextReveal';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, fetchApi } from '../config/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [files, setFiles] = useState([]);
-  const [contactInfo] = useState({
+  const [contactInfo, setContactInfo] = useState({
     phone1: '+65 8322 5509',
     phone2: '+65 8370 1443',
     whatsapp: '+65 8919 7865',
@@ -29,20 +29,39 @@ const Contact = () => {
     operatingHours: 'Mon - Fri: 08:30 AM - 06:30 PM | Sat: 09:00 AM - 01:00 PM',
     emergencySupport: '24/7 Urgent Permit Standby Available',
     companyName: 'AULA Permits Pte. Ltd.',
-    googleMapsUrl: 'https://maps.google.com/?q=26+Upper+Dickson+Road+Singapore+207478'
+    googleMapsUrl: 'https://maps.google.com/?q=26+Upper+Dickson+Road+Singapore+207478',
+    uenNumber: '202312345K'
   });
+
+  useEffect(() => {
+    fetchApi('/contact')
+      .then(data => {
+        if (data) {
+          setContactInfo(prev => ({
+            ...prev,
+            phone1: data.phone || prev.phone1,
+            phone2: data.phone2 || data.phone || prev.phone2,
+            whatsapp: data.whatsapp || prev.whatsapp,
+            email: data.email || prev.email,
+            address: data.address || prev.address,
+            operatingHours: data.operatingHours || prev.operatingHours,
+            emergencySupport: data.emergencySupport || prev.emergencySupport,
+            companyName: data.companyName || prev.companyName,
+            googleMapsUrl: data.googleMapsUrl || prev.googleMapsUrl,
+            uenNumber: data.uenNumber || prev.uenNumber
+          }));
+        }
+      })
+      .catch(err => console.warn('Could not fetch dynamic contact info:', err));
+  }, []);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
-
     if (name === 'fullName') {
-      // Only allow letters, spaces, hyphens, and apostrophes
       value = value.replace(/[^a-zA-Z\s\-']/g, '');
     } else if (name === 'phone') {
-      // Only allow numbers, plus, spaces, dashes, and parentheses
       value = value.replace(/[^0-9+\-\s()]/g, '');
     }
-
     setFormData(prev => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -60,7 +79,6 @@ const Contact = () => {
         validFiles.push(f);
       }
     }
-    // Filter out duplicates (same name and size)
     setFiles(prev => {
       const existingMap = new Set(prev.map(item => `${item.name}-${item.size}`));
       const nonDuplicates = validFiles.filter(item => !existingMap.has(`${item.name}-${item.size}`));
@@ -71,7 +89,7 @@ const Contact = () => {
     } else {
       setErrors(prev => ({ ...prev, file: '' }));
     }
-    e.target.value = null; // Clear input to allow re-selecting the same file if needed
+    e.target.value = null;
   };
 
   const removeFile = (index) => {

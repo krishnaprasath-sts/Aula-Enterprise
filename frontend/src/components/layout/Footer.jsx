@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, ArrowUp } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
+import { fetchApi } from '../../config/api';
 
 const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [contactInfo] = useState({
+  const [contactInfo, setContactInfo] = useState({
     phone1: '+65 8322 5509',
     phone2: '+65 8370 1443',
     whatsapp: '+65 8919 7865',
@@ -14,6 +15,25 @@ const Footer = () => {
     companyName: 'AULA Permits Pte. Ltd.',
     uenNumber: '202028266G'
   });
+
+  useEffect(() => {
+    fetchApi('/contact')
+      .then(data => {
+        if (data) {
+          setContactInfo(prev => ({
+            ...prev,
+            phone1: data.phone || prev.phone1,
+            phone2: data.phone2 || data.phone || prev.phone2,
+            whatsapp: data.whatsapp || prev.whatsapp,
+            email: data.email || prev.email,
+            address: data.address || prev.address,
+            companyName: data.companyName || prev.companyName,
+            uenNumber: data.uenNumber || prev.uenNumber
+          }));
+        }
+      })
+      .catch(err => console.warn('Could not fetch dynamic contact info:', err));
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
