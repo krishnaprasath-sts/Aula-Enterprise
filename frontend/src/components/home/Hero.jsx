@@ -10,9 +10,11 @@ const getSafeMediaUrl = (url, mediaType = 'video') => {
   if (!url) {
     return mediaType === 'image' ? '/assets/hero.png' : '/assets/home3.mp4';
   }
-  // Convert /src/assets/ to /assets/ for production
   if (url.includes('/src/assets/')) {
     url = url.replace('/src/assets/', '/assets/');
+  }
+  if (url.includes('aulaapi.saitechnosolutions.com/uploads/')) {
+    url = url.replace(/https?:\/\/aulaapi\.saitechnosolutions\.com\/uploads\//, '/uploads/');
   }
   return url;
 };

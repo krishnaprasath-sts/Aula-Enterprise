@@ -6,6 +6,7 @@ export const sanitizeData = (data) => {
   if (!data) return data;
   if (typeof data === 'string') {
     let sanitized = data.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
+                        .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com\/uploads\//g, '/uploads/')
                         .replace(/\/src\/assets\//g, '/assets/');
     return sanitized;
   }
@@ -25,11 +26,8 @@ export const sanitizeData = (data) => {
 export const formatImageUrl = (url) => {
   if (!url) return '';
   let formatted = url.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
-                     .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL)
+                     .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com\/uploads\//g, '/uploads/')
                      .replace(/\/src\/assets\//g, '/assets/');
-  if (formatted.startsWith('/uploads/')) {
-    return `${API_HOST_URL}${formatted}`;
-  }
   return formatted;
 };
 
