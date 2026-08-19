@@ -4,36 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
 import TextReveal from '../common/TextReveal';
-import { fetchApi, API_HOST_URL } from '../../config/api';
-
-const getSafeMediaUrl = (url, mediaType = 'video') => {
-  if (!url) {
-    return mediaType === 'image' ? '/assets/hero.png' : '/assets/home3.mp4';
-  }
-  if (url.includes('/src/assets/')) {
-    url = url.replace('/src/assets/', '/assets/');
-  }
-  if (url.includes('aulaapi.saitechnosolutions.com/uploads/')) {
-    url = url.replace(/https?:\/\/aulaapi\.saitechnosolutions\.com\/uploads\//, '/uploads/');
-  }
-  return url;
-};
-
-const DEFAULT_HERO = {
-  title: 'Navigate Global Trade With Absolute Confidence.',
-  subtitle: 'Smart permit declaration, customs clearance and trade compliance solutions that help Singapore businesses move goods faster, accurately and compliantly.',
-  ctaText: 'Apply Permit',
-  ctaLink: '/contact',
-  mediaType: 'video',
-  mediaUrl: '/assets/home3.mp4',
-  trustRate: '100%',
-  trustLabel: 'Customs Compliance Rate'
-};
+import { fetchApi, formatImageUrl } from '../../config/api';
 
 const Hero = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [heroData, setHeroData] = useState(DEFAULT_HERO);
+  const [heroData, setHeroData] = useState({
+    title: 'Navigate Global Trade With Absolute Confidence.',
+    subtitle: 'Smart permit declaration, customs clearance and trade compliance solutions that help Singapore businesses move goods faster, accurately and compliantly.',
+    ctaText: 'Apply Permit',
+    ctaLink: '/contact',
+    mediaType: 'video',
+    mediaUrl: '',
+    trustRate: '100%',
+    trustLabel: 'Customs Compliance Rate'
+  });
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -43,16 +28,15 @@ const Hero = () => {
         if (Array.isArray(data) && data.length > 0) {
           const active = data.find(b => b.status === 'Active') || data[0];
           if (active) {
-            const activeMediaUrl = getSafeMediaUrl(active.mediaUrl, active.mediaType || 'video');
             setHeroData({
-              title: active.title || DEFAULT_HERO.title,
-              subtitle: active.subtitle || DEFAULT_HERO.subtitle,
-              ctaText: active.ctaText || DEFAULT_HERO.ctaText,
-              ctaLink: active.ctaLink || DEFAULT_HERO.ctaLink,
-              mediaType: active.mediaType || DEFAULT_HERO.mediaType,
-              mediaUrl: activeMediaUrl,
-              trustRate: active.trustRate || DEFAULT_HERO.trustRate,
-              trustLabel: active.trustLabel || DEFAULT_HERO.trustLabel,
+              title: active.title || '',
+              subtitle: active.subtitle || '',
+              ctaText: active.ctaText || 'Apply Permit',
+              ctaLink: active.ctaLink || '/contact',
+              mediaType: active.mediaType || 'video',
+              mediaUrl: formatImageUrl(active.mediaUrl),
+              trustRate: active.trustRate || '100%',
+              trustLabel: active.trustLabel || 'Customs Compliance Rate',
             });
           }
         }
@@ -66,7 +50,7 @@ const Hero = () => {
 
   // Ensure mobile video plays inline, muted, and loops properly
   useEffect(() => {
-    if (videoRef.current && heroData.mediaType === 'video') {
+    if (videoRef.current && heroData.mediaType === 'video' && heroData.mediaUrl) {
       const vid = videoRef.current;
       vid.muted = true;
       vid.defaultMuted = true;
@@ -116,12 +100,10 @@ const Hero = () => {
     transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
   };
 
-  const currentMediaUrl = getSafeMediaUrl(heroData.mediaUrl, heroData.mediaType || 'video');
-
   return (
     <>
       <section className="hero-section">
-        {/* Full Screen Background Media */}
+        {/* Full Screen Background Media from Admin Panel */}
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
@@ -129,29 +111,30 @@ const Hero = () => {
           overflow: 'hidden'
         }}>
           {heroData.mediaType === 'image' ? (
-            <img
-              key={currentMediaUrl}
-              src={currentMediaUrl}
-              alt="Hero Background"
-              className="hero-media"
-            />
+            heroData.mediaUrl ? (
+              <img
+                key={heroData.mediaUrl}
+                src={heroData.mediaUrl}
+                alt="Hero Background"
+                className="hero-media"
+              />
+            ) : null
           ) : (
-            <video
-              ref={videoRef}
-              key={currentMediaUrl}
-              autoPlay
-              loop
-              muted
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              poster="/assets/hero.png"
-              className="hero-media"
-            >
-              <source src={currentMediaUrl} type="video/mp4" />
-              <source src="/assets/home3.mp4" type="video/mp4" />
-              <source src="/assets/home.mp4" type="video/mp4" />
-            </video>
+            heroData.mediaUrl ? (
+              <video
+                ref={videoRef}
+                key={heroData.mediaUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                webkit-playsinline="true"
+                preload="auto"
+                className="hero-media"
+              >
+                <source src={heroData.mediaUrl} type="video/mp4" />
+              </video>
+            ) : null
           )}
         </div>
 
