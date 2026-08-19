@@ -223,7 +223,7 @@ const Navbar = () => {
           </nav>
 
           {/* Right Section */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.75rem' }}>
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             {/* Desktop Right CTA */}
             <div style={{ display: 'none', alignItems: 'center', gap: '1rem' }} className="desktop-nav">
               <button
@@ -235,23 +235,6 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Mobile Header Apply Permit CTA */}
-            <button
-              onClick={() => setModalOpen(true)}
-              className="btn-primary mobile-cta-btn"
-              style={{
-                padding: '0.5rem 0.85rem',
-                fontSize: '0.75rem',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                borderRadius: '8px',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              APPLY PERMIT
-            </button>
-
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -259,14 +242,19 @@ const Navbar = () => {
               aria-label="Toggle navigation"
               style={{
                 padding: '0.5rem',
-                color: textColor,
-                borderRadius: '8px',
-                transition: 'color 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
-                width: '44px',
-                height: '44px',
+                color: isSolid ? 'var(--dark-navy)' : textColor,
+                background: isSolid ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid',
+                borderColor: isSolid ? 'rgba(0, 0, 0, 0.08)' : 'rgba(255, 255, 255, 0.25)',
+                borderRadius: '10px',
+                width: '46px',
+                height: '46px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                cursor: 'pointer'
               }}
             >
               <AnimatePresence mode="wait" initial={false}>
@@ -276,9 +264,9 @@ const Navbar = () => {
                   animate={{ opacity: 1, rotate: 0, scale: 1 }}
                   exit={{ opacity: 0, rotate: 90, scale: 0.8 }}
                   transition={{ duration: 0.2 }}
-                  style={{ display: 'flex' }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 >
-                  {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                  {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
                 </motion.div>
               </AnimatePresence>
             </button>
@@ -447,12 +435,10 @@ const Navbar = () => {
         @media (min-width: 992px) {
           .desktop-nav { display: flex !important; }
           .mobile-toggle { display: none !important; }
-          .mobile-cta-btn { display: none !important; }
         }
         @media (max-width: 991px) {
           .desktop-nav { display: none !important; }
           .mobile-toggle { display: flex !important; }
-          .mobile-cta-btn { display: inline-flex !important; }
         }
       `}</style>
     </>
