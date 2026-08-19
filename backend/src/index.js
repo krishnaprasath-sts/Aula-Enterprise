@@ -875,6 +875,165 @@ app.put('/api/contact-submissions/:id/status', authenticateJWT, async (req, res)
   }
 });
 
+
+// ==================== CAREERS / JOB VACANCIES ====================
+
+app.get('/api/jobs', async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM job_vacancies ORDER BY id DESC');
+    if (rows && rows.length > 0) {
+      const openRows = rows.filter(r => !r.status || r.status.toLowerCase() === 'open' || r.status.toLowerCase() === 'active');
+      return res.json(openRows.length > 0 ? openRows : rows);
+    }
+  } catch (err) {
+    console.warn('Query to job_vacancies failed, using fallback:', err.message);
+  }
+  res.json(memoryStore.jobs || []);
+});
+
+app.get('/api/jobs/all', authenticateJWT, async (req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM job_vacancies ORDER BY id DESC');
+    if (rows && rows.length > 0) {
+      return res.json(rows);
+    }
+  } catch (err) {
+    console.warn('Query to job_vacancies all failed, using fallback:', err.message);
+  }
+  res.json(memoryStore.jobs || []);
+});
+
+app.post('/api/jobs', authenticateJWT, async (req, res) => {
+  const { title, department, location, employment_type, description, requirements, responsibilities, status } = req.body;
+  try {
+    try {
+      const [result] = await pool.query(
+        'INSERT INTO job_vacancies (title, department, location, employment_type, description, requirements, responsibilities, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [title, department, location, employment_type, description, requirements, responsibilities, status || 'Open']
+      );
+      return res.status(201).json({ id: result.insertId, message: 'Job created successfully' });
+    } catch (dbErr) {
+      console.warn('DB insert failed, using fallback:', dbErr.message);
+    }
+    if (!memoryStore.jobs) memoryStore.jobs = [];
+    const newJob = { id: Date.now(), title, department, location, employment_type, description, requirements, responsibilities, status: status || 'Open' };
+    memoryStore.jobs.unshift(newJob);
+    res.status(201).json(newJob);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/jobs/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  const { title, department, location, employment_type, description, requirements, responsibilities, status } = req.body;
+  try {
+    if (isDbConnected) {
+      await pool.query(
+        'UPDATE job_vacancies SET title=?, department=?, location=?, employment_type=?, description=?, requirements=?, responsibilities=?, status=? WHERE id=?',
+        [title, department, location, employment_type, description, requirements, responsibilities, status, id]
+      );
+      return res.json({ message: 'Job updated successfully' });
+    }
+    if (memoryStore.jobs) {
+      memoryStore.jobs = memoryStore.jobs.map(j => j.id == id ? { ...j, title, department, location, employment_type, description, requirements, responsibilities, status } : j);
+    }
+    res.json({ message: 'Job updated successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/jobs/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (isDbConnected) {
+      await pool.query('DELETE FROM job_vacancies WHERE id = ?', [id]);
+    } else if (memoryStore.jobs) {
+      memoryStore.jobs = memoryStore.jobs.filter(j => j.id != id);
+    }
+    res.json({ message: 'Job deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================== JOB APPLICATIONS ====================
+
+app.post('/api/applications', upload.single('resume'), async (req, res) => {
+  const { job_id, name, email, phone, experience_years, current_company, linkedin, cover_message } = req.body;
+  
+  if (!name || !email || !phone || !experience_years || !req.file) {
+    return res.status(400).json({ error: 'Missing required fields or resume file.' });
+  }
+
+  const resumeUrl = `/uploads/${req.file.filename}`;
+
+  try {
+    if (isDbConnected) {
+      await pool.query(
+        'INSERT INTO job_applications (job_id, name, email, phone, experience_years, current_company, linkedin, resume_url, cover_message) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [job_id, name, email, phone, experience_years, current_company || null, linkedin || null, resumeUrl, cover_message || null]
+      );
+      return res.status(201).json({ message: 'Application submitted successfully' });
+    }
+    
+    if (!memoryStore.applications) memoryStore.applications = [];
+    memoryStore.applications.unshift({
+      id: Date.now(),
+      job_id, name, email, phone, experience_years, current_company, linkedin, resume_url: resumeUrl, cover_message,
+      status: 'New', created_at: new Date().toISOString()
+    });
+    res.status(201).json({ message: 'Application submitted successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/applications', authenticateJWT, async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT a.*, j.title as job_title 
+      FROM job_applications a 
+      LEFT JOIN job_vacancies j ON a.job_id = j.id 
+      ORDER BY a.id DESC
+    `);
+    return res.json(rows);
+  } catch (err) {
+    console.warn('Query to job_applications failed, using fallback:', err.message);
+    res.json(memoryStore.applications || []);
+  }
+});
+
+app.put('/api/applications/:id/status', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+  try {
+    if (isDbConnected) {
+      await pool.query('UPDATE job_applications SET status = ? WHERE id = ?', [status, id]);
+    } else if (memoryStore.applications) {
+      memoryStore.applications = memoryStore.applications.map(a => a.id == id ? { ...a, status } : a);
+    }
+    res.json({ message: 'Application status updated', status });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/applications/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (isDbConnected) {
+      await pool.query('DELETE FROM job_applications WHERE id = ?', [id]);
+    } else if (memoryStore.applications) {
+      memoryStore.applications = memoryStore.applications.filter(a => a.id != id);
+    }
+    res.json({ message: 'Application deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

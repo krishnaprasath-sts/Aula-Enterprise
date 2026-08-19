@@ -1,7 +1,9 @@
 import React from 'react';
-import { CheckCircle2, ShieldCheck, Clock, Award, ChevronRight } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, Clock, Award, ChevronRight, Shield, Timer, Package, Headset, Handshake } from 'lucide-react';
 import FadeUp from '../common/FadeUp';
 import TextReveal from '../common/TextReveal';
+
+const shipImage = '/assets/ship.png';
 
 const CompanyProfile = () => {
   const highlights = [
@@ -46,73 +48,132 @@ const CompanyProfile = () => {
         }} className="company-profile-grid">
 
           {/* Visual Side (Human-Centric Professional Imagery) */}
+          {/* Visual Side (Exact Replica) */}
           <FadeUp delay={0.1} style={{ height: 'calc(100% - 2.5rem)', marginTop: '2.5rem' }}>
             <div
+              className="exact-visual-card"
               style={{
                 position: 'relative',
                 borderRadius: '24px',
                 overflow: 'hidden',
                 height: '100%',
-                minHeight: '480px',
-                boxShadow: '0 25px 50px -12px rgba(0, 156, 252, 0.25)',
-                border: '1px solid rgba(255, 255, 255, 0.5)',
+                minHeight: '650px',
+                boxShadow: '0 25px 50px -12px rgba(0, 156, 252, 0.4), 0 0 0 1px rgba(0, 156, 252, 0.2)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
               }}
             >
               <img
-                src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=800"
-                alt="Professional Trade Team"
+                src={shipImage}
+                alt="Seamless Customs Support"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, transform: 'scale(1.02)' }}
               />
 
-              <div style={{
+              {/* Complex overlay for perfect lighting */}
+              {/* <div style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.4) 60%, transparent 100%)',
+                background: 'linear-gradient(to bottom, rgba(0, 5, 25, 0.85) 0%, rgba(0, 10, 30, 0.3) 25%, transparent 45%, rgba(0, 5, 20, 0.8) 65%, rgba(0, 2, 15, 0.95) 100%)',
                 pointerEvents: 'none'
               }} />
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '80%',
+                height: '50%',
+                background: 'radial-gradient(ellipse at top left, rgba(0, 10, 40, 0.9) 0%, transparent 70%)',
+                pointerEvents: 'none'
+              }} /> */}
 
-              <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', padding: '3rem', zIndex: 2 }}>
+              {/* Content Container */}
+              <div className="exact-visual-content" style={{ position: 'relative', padding: '2.5rem', zIndex: 2, display: 'flex', flexDirection: 'column' }}>
+
+                {/* Badge */}
                 <div style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  padding: '0.5rem 1.25rem',
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(12px)',
-                  WebkitBackdropFilter: 'blur(12px)',
+                  padding: '0.4rem 1.2rem',
+                  background: 'linear-gradient(90deg, rgba(0, 20, 60, 0.8) 0%, rgba(0, 10, 30, 0.8) 100%)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   color: '#FFFFFF',
                   borderRadius: '99px',
                   fontSize: '0.85rem',
-                  fontWeight: 700,
-                  marginBottom: '1.25rem',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                  fontWeight: 600,
+                  border: '1px solid #00C6FF',
+                  boxShadow: '0 0 15px rgba(0, 198, 255, 0.3), inset 0 0 10px rgba(0, 198, 255, 0.1)',
+                  alignSelf: 'flex-start',
+                  marginBottom: '1.5rem'
                 }}>
-                  <Award size={16} color="#00C6FF" /> Premium Declaring Agent
+                  <ShieldCheck size={16} color="#00C6FF" /> Premium Declaring Agent
                 </div>
 
-                <h3 style={{ fontSize: '2.2rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '1.25rem', lineHeight: 1.15 }}>
-                  Streamlining Customs<br />For Enterprise
-                </h3>
+                {/* Headlines */}
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <h3 className="exact-visual-title" style={{ fontSize: '3.2rem', color: '#FFFFFF', fontWeight: 800, marginBottom: '0.75rem', lineHeight: 1.1, letterSpacing: '-0.02em' }}>
+                    Seamless <br />
+                    <span style={{ color: '#00C6FF', textShadow: '0 0 20px rgba(0, 198, 255, 0.4)' }}>Customs Support</span><br />
+                    for Your Business
+                  </h3>
+                  <p style={{ fontSize: '1.25rem', color: '#E2E8F0', fontWeight: 500, letterSpacing: '0.01em' }}>
+                    Fast. Compliant. Hassle-Free.
+                  </p>
+                </div>
 
-                <div className="responsive-grid-2" style={{
-                  gap: '2rem',
-                  paddingTop: '1.75rem',
-                  borderTop: '1px solid rgba(255, 255, 255, 0.15)'
+                {/* Neon Divider */}
+                <div className="exact-neon-divider" />
+
+                {/* Grid of Features */}
+                <div className="exact-feature-grid" style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '1rem',
+                  marginBottom: '1rem'
                 }}>
-                  <div>
-                    <div className="text-gradient-blue" style={{ fontSize: '1.75rem',color: '#FFFFFF', fontWeight: 800, fontFamily: 'var(--font-heading)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>
-                      TradeNet
+                  {[
+                    { icon: Timer, title: 'Instant', subtitle: 'Processing', desc: 'Within 30 Mins' },
+                    { icon: ShieldCheck, title: '100% Compliant', subtitle: '& Secure', desc: 'Your Data is Safe' },
+                    { icon: Package, title: 'All Permit Types', subtitle: 'Supported', desc: 'Import • Export • GST' },
+                    { icon: Headset, title: 'Dedicated', subtitle: 'Expert Support', desc: 'Always Here to Help' },
+                  ].map((feature, idx) => (
+                    <div key={idx} className="exact-feature-card">
+                      <div style={{ marginBottom: '0.75rem', color: '#00C6FF', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <feature.icon size={32} strokeWidth={1.5} style={{ filter: 'drop-shadow(0 0 8px rgba(0, 198, 255, 0.6))' }} />
+                      </div>
+                      <div style={{ color: '#FFFFFF', fontSize: '0.9rem', fontWeight: 700, lineHeight: 1.3, marginBottom: '0.3rem' }}>
+                        {feature.title} <br /> {feature.subtitle}
+                      </div>
+                      <div style={{ color: '#A0B0C0', fontSize: '0.75rem', fontWeight: 500 }}>
+                        {feature.desc}
+                      </div>
                     </div>
-                    <div style={{ fontSize: '0.9rem', color: '#ffffffff', fontWeight: 500, marginTop: '0.25rem' }}>Direct Integration</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-heading)' }}>
-                      Dedicated
+                  ))}
+                </div>
+
+                {/* Footer Banner */}
+                <div className="exact-bottom-banner">
+                  <div className="exact-banner-accent" />
+                  <div className="exact-banner-accent-right" />
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', zIndex: 1, width: '100%' }}>
+                    <Handshake size={36} color="#00C6FF" style={{ filter: 'drop-shadow(0 0 10px rgba(0, 198, 255, 0.5))', marginLeft: '0.5rem' }} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flex: 1 }}>
+                      <div className="exact-banner-line" style={{ width: '1px', height: '36px', background: 'rgba(0, 198, 255, 0.3)' }} />
+                      <div>
+                        <div style={{ color: '#FFFFFF', fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.2rem' }}>
+                          Trusted Customs Permit Partner
+                        </div>
+                        <div style={{ color: '#A0B0C0', fontSize: '0.85rem', fontWeight: 500 }}>
+                          Reliable • Accurate • On-Time
+                        </div>
+                      </div>
                     </div>
-                    <div style={{ fontSize: '0.9rem', color: '#ffffffff', fontWeight: 500, marginTop: '0.25rem' }}>Specialist Support</div>
                   </div>
                 </div>
+
               </div>
             </div>
           </FadeUp>
@@ -199,6 +260,43 @@ const CompanyProfile = () => {
             grid-template-columns: 1fr 1.15fr !important;
           }
         }
+
+        @media (max-width: 768px) {
+          .company-profile-grid {
+            gap: 2.5rem !important;
+          }
+          .exact-visual-card {
+            min-height: auto !important;
+            padding-top: 3rem !important;
+          }
+          .exact-visual-content {
+            padding: 1.25rem !important;
+          }
+          .exact-visual-title {
+            font-size: 2rem !important;
+          }
+          .exact-feature-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+          }
+          .exact-feature-card {
+            padding: 1rem 0.25rem !important;
+          }
+          .exact-feature-card svg {
+            width: 24px !important;
+            height: 24px !important;
+          }
+          .exact-banner-line {
+            display: none !important;
+          }
+          .exact-bottom-banner {
+            padding: 1rem !important;
+          }
+          .exact-bottom-banner > div {
+            flex-wrap: wrap !important;
+            gap: 0.75rem !important;
+          }
+        }
         
         .highlight-card:hover {
           transform: translateY(-4px);
@@ -213,6 +311,91 @@ const CompanyProfile = () => {
         .highlight-card:hover .highlight-arrow {
           opacity: 1 !important;
           transform: translateX(0) !important;
+        }
+
+        /* Exact Match Styling */
+        .exact-feature-card {
+          background: linear-gradient(180deg, rgba(10, 35, 75, 0.4) 0%, rgba(2, 10, 30, 0.6) 100%);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border: 1px solid rgba(0, 198, 255, 0.2);
+          border-radius: 16px;
+          padding: 1.5rem 0.5rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .exact-feature-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 10%;
+          right: 10%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0, 198, 255, 0.8), transparent);
+        }
+        
+        .exact-feature-card:hover {
+          transform: translateY(-5px);
+          border-color: rgba(0, 198, 255, 0.5);
+          box-shadow: 0 15px 40px rgba(0, 198, 255, 0.2);
+        }
+
+        .exact-bottom-banner {
+          background: linear-gradient(90deg, rgba(5, 15, 45, 0.8) 0%, rgba(2, 10, 30, 0.9) 100%);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(0, 198, 255, 0.3);
+          border-radius: 12px;
+          padding: 1rem 1.25rem;
+          display: flex;
+          align-items: center;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          position: relative;
+          overflow: hidden;
+          margin-top: 0.5rem;
+        }
+
+        .exact-banner-accent {
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 80px;
+          background: linear-gradient(90deg, rgba(0, 198, 255, 0.15) 0%, transparent 100%);
+          border-right: 2px solid #00C6FF;
+          transform: skewX(-20deg);
+          transform-origin: bottom;
+          margin-left: -20px;
+          box-shadow: 5px 0 20px rgba(0, 198, 255, 0.3);
+        }
+        
+        .exact-banner-accent-right {
+          position: absolute;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          width: 40px;
+          background: linear-gradient(-90deg, rgba(0, 198, 255, 0.1) 0%, transparent 100%);
+          border-left: 2px solid #00C6FF;
+          transform: skewX(-20deg);
+          transform-origin: bottom;
+          margin-right: -20px;
+        }
+
+        .exact-neon-divider {
+          height: 4px;
+          width: 80px;
+          background: linear-gradient(90deg, #00C6FF, rgba(0, 198, 255, 0.1));
+          box-shadow: 0 0 12px #00C6FF, 0 0 24px #00C6FF;
+          border-radius: 4px;
+          margin-bottom: 2.5rem;
         }
       `}</style>
     </section>

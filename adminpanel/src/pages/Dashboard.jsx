@@ -43,7 +43,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const newEnquiriesCount = enquiries.filter(e => e.status === 'New').length || 2;
+  const newEnquiriesCount = enquiries.filter(e => e.status === 'New').length;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>

@@ -392,12 +392,136 @@ html {
     padding: 4rem 0;
   }
 
+  .container {
+    padding-inline: 1.125rem;
+  }
+
   h1 {
     font-size: clamp(2rem, 6vw, 3rem);
   }
 
   h2 {
     font-size: clamp(1.6rem, 4vw, 2.5rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .services-page-hero {
+    padding: 8.5rem 0 4.5rem !important;
+    background-attachment: scroll !important;
+  }
+
+  .services-page-hero p {
+    font-size: 1rem !important;
+  }
+
+  .services-list-grid,
+  .lead-cta-card,
+  .job-detail-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1.25rem !important;
+  }
+
+  .lead-cta-content {
+    padding: 3rem 1.5rem !important;
+  }
+
+  .lead-cta-content .btn-primary,
+  .lead-cta-content .btn-secondary {
+    width: 100%;
+  }
+
+  .careers-hero {
+    padding: 9rem 1.125rem 4.5rem !important;
+  }
+
+  .careers-listing {
+    padding: 4rem 1.125rem !important;
+  }
+
+  .careers-listing-heading {
+    margin-bottom: 2rem !important;
+  }
+
+  .job-card {
+    padding: 1.25rem !important;
+  }
+
+  .job-card-header,
+  .job-card-actions {
+    align-items: stretch !important;
+    width: 100%;
+  }
+
+  .job-card-actions .btn-primary {
+    flex: 1;
+  }
+
+  .job-card-title-row {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+
+  .job-card-title-row h3 {
+    font-size: 1.25rem !important;
+  }
+
+  .application-form-grid,
+  .consultation-details-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .job-application-modal .modal-content {
+    border-radius: 12px;
+  }
+
+  .job-application-modal > div:first-child,
+  .job-application-modal > div:nth-child(2) {
+    padding: 1.125rem !important;
+  }
+
+  .consultation-page-form {
+    margin: -2.5rem auto 2.5rem !important;
+    padding-inline: 1rem !important;
+  }
+
+  .consultation-page-form form > div:first-child,
+  .consultation-page-form form > div:nth-child(2) {
+    padding-inline: 1.25rem !important;
+  }
+
+  .consultation-submit-area {
+    position: static !important;
+    padding: 1.5rem 1.25rem 2.5rem !important;
+    background: transparent !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+
+  .consultation-submit-button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 52px !important;
+    padding: 1rem 1.5rem !important;
+    font-size: 1rem !important;
+    font-weight: 800 !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.45) !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Inline card grids used across page sections must never exceed the viewport. */
+  [style*="minmax(300px"],
+  [style*="minmax(320px"],
+  [style*="minmax(340px"],
+  [style*="minmax(350px"] {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 }
 
@@ -520,4 +644,12 @@ html {
   .process-card-padding {
     padding: 1.5rem 1.25rem !important;
   }
+}
+
+/* ==================== GLOBAL MOBILE RESPONSIVE FALLBACKS ==================== */
+@media (max-width: 768px) {
+  .container { padding: 0 1.25rem !important; }
+  .section-padding { padding: 3.5rem 0 !important; }
+  html { font-size: 15px; }
+  img { max-width: 100%; height: auto; }
 }

@@ -8,6 +8,8 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 import ContactSubmissions from './pages/ContactSubmissions';
 import Enquiry from './pages/Enquiry';
+import Jobs from './pages/Jobs';
+import Applications from './pages/Applications';
 
 import PermitTypes from './pages/PermitTypes';
 
@@ -34,6 +36,8 @@ function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="contact-submissions" element={<ContactSubmissions />} />
           <Route path="enquiry" element={<Enquiry />} />
+          <Route path="jobs" element={<Jobs />} />
+          <Route path="applications" element={<Applications />} />
         </Route>
       </Routes>
     </Router>

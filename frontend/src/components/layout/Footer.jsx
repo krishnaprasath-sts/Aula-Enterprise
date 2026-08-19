@@ -59,7 +59,7 @@ const Footer = () => {
             <div>
               <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.25rem' }}>
                 <img
-                  src="/src/assets/logo 2.png"
+                  src="/assets/logo 2.png"
                   alt="AULA Permits"
                   style={{
                     width: '100px',

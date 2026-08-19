@@ -71,7 +71,7 @@ const Hero = () => {
     setFormData({
       title: '',
       subtitle: '',
-      ctaText: 'Applt Permit',
+      ctaText: 'Apply Permit',
       ctaLink: '/contact',
       mediaType: 'video',
       mediaUrl: '/src/assets/home.mp4',

@@ -5,10 +5,11 @@ import ConsultationModal from '../components/common/ConsultationModal';
 import FadeUp from '../components/common/FadeUp';
 import TextReveal from '../components/common/TextReveal';
 import LeadCTA from '../components/home/LeadCTA';
-import img1 from '../assets/Trade Documentation Verification image.png';
-import img2 from '../assets/Compliance & Scheme Audits.jpg';
-import img3 from '../assets/customs.jpg';
-import img4 from '../assets/import.jpg';
+
+const img1 = '/assets/Trade Documentation Verification image.png';
+const img2 = '/assets/Compliance & Scheme Audits.jpg';
+const img3 = '/assets/customs.jpg';
+const img4 = '/assets/import.jpg';
 
 export const blogPostsData = [
   {

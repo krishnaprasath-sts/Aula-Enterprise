@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+export const API_HOST_URL = import.meta.env.VITE_API_HOST || 'http://aulaapi.saitechnosolutions.com';
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || `${API_HOST_URL}/api`;
 
 // Helper to retrieve the current JWT token
 export const getToken = () => localStorage.getItem('aula_jwt_token');
@@ -24,7 +25,31 @@ export const setCurrentUser = (user) => {
   }
 };
 
-// Generic authenticated fetch helper with auto fallback to localStorage
+// Helper to automatically convert any localhost:5000 or http URLs to live domain
+export const sanitizeData = (data) => {
+  if (!data) return data;
+  if (typeof data === 'string') {
+    let sanitized = data.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
+                        .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL);
+    if (sanitized.startsWith('/uploads/')) {
+      sanitized = `${API_HOST_URL}${sanitized}`;
+    }
+    return sanitized;
+  }
+  if (Array.isArray(data)) {
+    return data.map(item => sanitizeData(item));
+  }
+  if (typeof data === 'object') {
+    const sanitized = {};
+    for (const key of Object.keys(data)) {
+      sanitized[key] = sanitizeData(data[key]);
+    }
+    return sanitized;
+  }
+  return data;
+};
+
+// Generic authenticated fetch helper using single dynamic base URL
 export async function apiRequest(endpoint, method = 'GET', data = null) {
   const token = getToken();
   const headers = {
@@ -44,11 +69,12 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
     options.body = JSON.stringify(data);
   }
 
+  const url = `${API_BASE_URL}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+
   try {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-    
+    const response = await fetch(url, options);
+
     if (response.status === 401 || response.status === 403) {
-      // Token invalid or expired
       if (endpoint !== '/auth/login') {
         console.warn('Session expired. Redirecting to login.');
         setToken(null);
@@ -62,9 +88,15 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
       throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      throw new Error('Response is not valid JSON');
+    }
+
+    const result = await response.json();
+    return sanitizeData(result);
   } catch (error) {
-    console.warn(`API call failed for ${endpoint}:`, error.message);
+    console.error(`Failed to fetch ${endpoint}:`, error.message);
     throw error;
   }
 }
@@ -85,21 +117,29 @@ export const uploadApi = {
     const token = getToken();
     const formData = new FormData();
     formData.append('mediaFile', file);
-    
+
     const headers = {};
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const response = await fetch(`${API_BASE_URL}/upload`, {
-      method: 'POST',
-      headers,
-      body: formData
-    });
+    const url = `${API_BASE_URL}/upload`;
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Failed to upload file');
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to upload file');
+      }
+      const result = await response.json();
+      return sanitizeData(result);
+    } catch (err) {
+      console.error('Failed to upload file:', err);
+      throw err;
     }
-    return await response.json();
   }
 };
 
@@ -261,6 +301,63 @@ export const contactSubmissionsApi = {
   updateStatus: async (id, status) => {
     try {
       return await apiRequest(`/contact-submissions/${id}/status`, 'PUT', { status });
+    } catch (e) {
+      throw e;
+    }
+  }
+};
+
+// Jobs APIs
+export const jobsApi = {
+  getAll: async () => {
+    try {
+      return await apiRequest('/jobs/all', 'GET');
+    } catch (e) {
+      throw e;
+    }
+  },
+  create: async (job) => {
+    try {
+      return await apiRequest('/jobs', 'POST', job);
+    } catch (e) {
+      throw e;
+    }
+  },
+  update: async (id, job) => {
+    try {
+      return await apiRequest(`/jobs/${id}`, 'PUT', job);
+    } catch (e) {
+      throw e;
+    }
+  },
+  delete: async (id) => {
+    try {
+      return await apiRequest(`/jobs/${id}`, 'DELETE');
+    } catch (e) {
+      throw e;
+    }
+  }
+};
+
+// Applications APIs
+export const applicationsApi = {
+  getAll: async () => {
+    try {
+      return await apiRequest('/applications', 'GET');
+    } catch (e) {
+      throw e;
+    }
+  },
+  updateStatus: async (id, status) => {
+    try {
+      return await apiRequest(`/applications/${id}/status`, 'PUT', { status });
+    } catch (e) {
+      throw e;
+    }
+  },
+  delete: async (id) => {
+    try {
+      return await apiRequest(`/applications/${id}`, 'DELETE');
     } catch (e) {
       throw e;
     }

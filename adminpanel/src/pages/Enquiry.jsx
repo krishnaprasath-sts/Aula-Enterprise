@@ -281,7 +281,7 @@ const Enquiry = () => {
             <div className="modal-header">
               <div className="modal-title">
                 <Users size={20} color="var(--brand-purple)" />
-                Enquiry Details (#{selectedEnquiry.id})
+                Enquiry Details
               </div>
               <button onClick={() => setIsViewModalOpen(false)} className="modal-close-btn">
                 <X size={20} />
@@ -302,7 +302,7 @@ const Enquiry = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', fontSize: '0.9rem' }}>
+              <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', fontSize: '0.9rem', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Mail size={16} color="var(--brand-purple)" />
                   <a href={`mailto:${selectedEnquiry.email}`} style={{ color: 'var(--brand-blue)', fontWeight: 600 }}>{selectedEnquiry.email}</a>
@@ -311,6 +311,12 @@ const Enquiry = () => {
                   <Phone size={16} color="var(--brand-emerald)" />
                   <span style={{ fontWeight: 600 }}>{selectedEnquiry.phone}</span>
                 </div>
+                {selectedEnquiry.whatsapp && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <MessageSquare size={16} color="#10B981" />
+                    <span style={{ fontWeight: 600, color: '#10B981' }}>{selectedEnquiry.whatsapp} (WA)</span>
+                  </div>
+                )}
               </div>
 
               <div className="form-group">
@@ -376,7 +382,7 @@ const Enquiry = () => {
 
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <a 
-                    href={`https://wa.me/${selectedEnquiry.phone.replace(/[^0-9]/g, '')}`} 
+                    href={`https://wa.me/${(selectedEnquiry.whatsapp || selectedEnquiry.phone || '').replace(/[^0-9]/g, '')}`} 
                     target="_blank" 
                     rel="noreferrer"
                     className="btn btn-secondary btn-sm"

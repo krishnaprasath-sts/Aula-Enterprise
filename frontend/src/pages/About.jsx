@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ShieldCheck, Award, FileText, CheckCircle2, ArrowRight, Anchor, Globe, Users } from 'lucide-react';
@@ -37,6 +38,10 @@ const About = () => {
 
   return (
     <>
+      <Helmet>
+        <title>About Us | AULA Permits Singapore</title>
+        <meta name="description" content="Learn about AULA Permits, the leading declaring agents in Singapore specializing in customs, trade compliance, and permit solutions." />
+      </Helmet>
       <div ref={containerRef} style={{ paddingTop: '7rem', width: '100%', overflowX: 'clip' }}>
 
         {/* Page Hero */}

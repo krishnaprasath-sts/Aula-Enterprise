@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, ShieldCheck, X } from 'lucide-react';
 import axios from 'axios';
 import FadeUp from '../components/common/FadeUp';
 import TextReveal from '../components/common/TextReveal';
+import { API_BASE_URL } from '../config/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -58,7 +60,12 @@ const Contact = () => {
         validFiles.push(f);
       }
     }
-    setFiles(prev => [...prev, ...validFiles]);
+    // Filter out duplicates (same name and size)
+    setFiles(prev => {
+      const existingMap = new Set(prev.map(item => `${item.name}-${item.size}`));
+      const nonDuplicates = validFiles.filter(item => !existingMap.has(`${item.name}-${item.size}`));
+      return [...prev, ...nonDuplicates];
+    });
     if (sizeError) {
       setErrors(prev => ({ ...prev, file: 'Some files exceed 1GB limit and were skipped.' }));
     } else {
@@ -102,7 +109,7 @@ const Contact = () => {
       if (files.length > 0) {
         const uploadData = new FormData();
         files.forEach(f => uploadData.append('mediaFiles', f));
-        const res = await axios.post('http://localhost:5000/api/upload-multiple', uploadData);
+        const res = await axios.post(`${API_BASE_URL}/upload-multiple`, uploadData);
         if (res.data.urls) {
           attachmentsJSON = JSON.stringify(res.data.urls);
         }
@@ -117,7 +124,7 @@ const Contact = () => {
         message: formData.message,
         attachments: attachmentsJSON
       };
-      await axios.post('http://localhost:5000/api/contact-submissions', payload);
+      await axios.post(`${API_BASE_URL}/contact-submissions`, payload);
       setSubmitted(true);
     } catch (err) {
       console.error(err);
@@ -129,6 +136,10 @@ const Contact = () => {
 
   return (
     <div style={{ paddingTop: '7rem', width: '100%', overflowX: 'clip' }}>
+      <Helmet>
+        <title>Contact Us | AULA Permits Singapore</title>
+        <meta name="description" content="Get in touch with AULA Permits for all your Singapore customs clearance, import/export permits, and trade documentation needs." />
+      </Helmet>
 
       {/* Page Hero */}
       <section style={{ backgroundColor: 'var(--brand-blue-subtle)', padding: '5rem 0', borderBottom: '1px solid var(--border-blue)' }}>

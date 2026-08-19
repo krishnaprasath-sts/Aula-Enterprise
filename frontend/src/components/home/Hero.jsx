@@ -1,9 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
 import TextReveal from '../common/TextReveal';
+import { fetchApi, API_HOST_URL } from '../../config/api';
+
+const DEFAULT_VIDEO_URL = `${API_HOST_URL}/uploads/1786702952606-334235189.mp4`;
+
+const getSafeMediaUrl = (url, mediaType = 'video') => {
+  if (!url) {
+    return mediaType === 'image' ? '/assets/hero.png' : DEFAULT_VIDEO_URL;
+  }
+  if (url === '/assets/home.mp4' || url.endsWith('/home.mp4') || url === 'home.mp4') {
+    return DEFAULT_VIDEO_URL;
+  }
+  return url;
+};
 
 const DEFAULT_HERO = {
   title: 'Navigate Global Trade With Absolute Confidence.',
@@ -11,7 +24,7 @@ const DEFAULT_HERO = {
   ctaText: 'Apply Permit',
   ctaLink: '/contact',
   mediaType: 'video',
-  mediaUrl: '/src/assets/home.mp4',
+  mediaUrl: DEFAULT_VIDEO_URL,
   trustRate: '100%',
   trustLabel: 'Customs Compliance Rate'
 };
@@ -19,45 +32,103 @@ const DEFAULT_HERO = {
 const Hero = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [heroData, setHeroData] = useState(DEFAULT_HERO);
+  const [heroData, setHeroData] = useState(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('aula_active_hero');
+        if (saved) return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return DEFAULT_HERO;
+  });
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const fetchHero = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/hero-banners');
-        if (res.ok) {
-          const data = await res.json();
-          if (Array.isArray(data) && data.length > 0) {
-            const active = data.find(b => b.status === 'Active') || data[0];
-            if (active) {
-              setHeroData({
-                title: active.title || DEFAULT_HERO.title,
-                subtitle: active.subtitle || DEFAULT_HERO.subtitle,
-                ctaText: active.ctaText || DEFAULT_HERO.ctaText,
-                ctaLink: active.ctaLink || DEFAULT_HERO.ctaLink,
-                mediaType: active.mediaType || DEFAULT_HERO.mediaType,
-                mediaUrl: active.mediaUrl || DEFAULT_HERO.mediaUrl,
-                trustRate: active.trustRate || DEFAULT_HERO.trustRate,
-                trustLabel: active.trustLabel || DEFAULT_HERO.trustLabel,
-              });
-            }
+        const data = await fetchApi(`/hero-banners?t=${Date.now()}`, { cache: 'no-store' });
+        if (Array.isArray(data) && data.length > 0) {
+          const active = data.find(b => b.status === 'Active') || data[0];
+          if (active) {
+            const activeMediaUrl = getSafeMediaUrl(active.mediaUrl, active.mediaType || 'video');
+            const updatedHero = {
+              title: active.title || DEFAULT_HERO.title,
+              subtitle: active.subtitle || DEFAULT_HERO.subtitle,
+              ctaText: active.ctaText || DEFAULT_HERO.ctaText,
+              ctaLink: active.ctaLink || DEFAULT_HERO.ctaLink,
+              mediaType: active.mediaType || DEFAULT_HERO.mediaType,
+              mediaUrl: activeMediaUrl,
+              trustRate: active.trustRate || DEFAULT_HERO.trustRate,
+              trustLabel: active.trustLabel || DEFAULT_HERO.trustLabel,
+            };
+            setHeroData(updatedHero);
+            try {
+              localStorage.setItem('aula_active_hero', JSON.stringify(updatedHero));
+            } catch (e) {}
           }
         }
       } catch (err) {
-        // Fallback to local storage or defaults
-        const saved = localStorage.getItem('aula_hero_banners');
+        // Fallback to local storage
+        const saved = localStorage.getItem('aula_active_hero') || localStorage.getItem('aula_hero_banners');
         if (saved) {
           try {
             const parsed = JSON.parse(saved);
-            const active = parsed.find(b => b.status === 'Active') || parsed[0];
-            if (active) setHeroData(active);
-          } catch (e) {}
+            const active = Array.isArray(parsed) ? (parsed.find(b => b.status === 'Active') || parsed[0]) : parsed;
+            if (active) {
+              setHeroData({
+                ...active,
+                mediaUrl: getSafeMediaUrl(active.mediaUrl, active.mediaType || 'video')
+              });
+            }
+          } catch (e) { }
         }
       }
     };
 
     fetchHero();
   }, []);
+
+  // Ensure mobile video plays inline, muted, and loops properly
+  useEffect(() => {
+    if (videoRef.current && heroData.mediaType === 'video') {
+      const vid = videoRef.current;
+      vid.muted = true;
+      vid.defaultMuted = true;
+      vid.playsInline = true;
+      vid.setAttribute('playsinline', '');
+      vid.setAttribute('webkit-playsinline', '');
+      vid.setAttribute('muted', '');
+
+      const playVideo = () => {
+        const p = vid.play();
+        if (p !== undefined) {
+          p.catch((e) => {
+            console.log('Mobile video autoplay deferred:', e);
+          });
+        }
+      };
+
+      vid.addEventListener('canplay', playVideo, { once: true });
+      
+      // Fallback for mobile Low Power Mode: start video on first touch/scroll
+      const handleTouchStart = () => {
+        if (vid.paused) {
+          vid.play().catch(() => {});
+        }
+      };
+      window.addEventListener('touchstart', handleTouchStart, { once: true, passive: true });
+      window.addEventListener('scroll', handleTouchStart, { once: true, passive: true });
+
+      vid.load();
+      playVideo();
+
+      return () => {
+        vid.removeEventListener('canplay', playVideo);
+        window.removeEventListener('touchstart', handleTouchStart);
+        window.removeEventListener('scroll', handleTouchStart);
+      };
+    }
+  }, [heroData.mediaUrl, heroData.mediaType]);
 
   const animationConfig = {
     initial: { opacity: 0, y: 50 },
@@ -66,6 +137,9 @@ const Hero = () => {
     transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }
   };
 
+  const currentMediaUrl = getSafeMediaUrl(heroData.mediaUrl, heroData.mediaType || 'video');
+  const relativeUploadUrl = currentMediaUrl.includes('/uploads/') ? `/uploads/${currentMediaUrl.split('/uploads/')[1]}` : null;
+
   return (
     <>
       <section className="hero-section">
@@ -73,23 +147,32 @@ const Hero = () => {
         <div style={{
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
-          zIndex: 1
+          zIndex: 1,
+          overflow: 'hidden'
         }}>
           {heroData.mediaType === 'image' ? (
-            <img 
-              src={heroData.mediaUrl || '/src/assets/hero.png'}
+            <img
+              key={currentMediaUrl}
+              src={currentMediaUrl}
               alt="Hero Background"
               className="hero-media"
             />
           ) : (
             <video
-              src={heroData.mediaUrl || '/src/assets/home.mp4'}
+              ref={videoRef}
+              key={currentMediaUrl}
+              src={currentMediaUrl}
               autoPlay
               loop
               muted
               playsInline
+              webkit-playsinline="true"
+              preload="auto"
               className="hero-media"
-            />
+            >
+              {relativeUploadUrl && <source src={relativeUploadUrl} type="video/mp4" />}
+              <source src={currentMediaUrl} type="video/mp4" />
+            </video>
           )}
         </div>
 
@@ -98,7 +181,7 @@ const Hero = () => {
             maxWidth: '850px', margin: '0', textAlign: 'left', paddingTop: '40px'
           }}>
 
-            <TextReveal 
+            <TextReveal
               key={heroData.title}
               text={heroData.title}
               mode="lines"

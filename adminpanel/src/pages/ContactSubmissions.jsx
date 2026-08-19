@@ -236,7 +236,7 @@ const ContactSubmissions = () => {
                       </span>
                     </td>
                     <td style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-                      {enquiry.date}
+                      {enquiry.created_at ? new Date(enquiry.created_at).toLocaleString() : (enquiry.date || 'Just now')}
                     </td>
                     <td>
                       <span className={`badge ${
@@ -256,9 +256,9 @@ const ContactSubmissions = () => {
                           <Eye size={16} />
                         </button>
                         <button 
-                          onClick={() => { setEnquiryToDelete(enquiry); setIsDeleteModalOpen(true); }}
+                          onClick={() => { setSubmissionToDelete(enquiry); setIsDeleteModalOpen(true); }}
                           className="btn-icon delete" 
-                          title="Delete Enquiry"
+                          title="Delete Submission"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -273,13 +273,13 @@ const ContactSubmissions = () => {
       </div>
 
       {/* VIEW DETAILS MODAL */}
-      {isViewModalOpen && selectedEnquiry && (
+      {isViewModalOpen && selectedSubmission && (
         <div className="modal-backdrop">
           <div className="modal-dialog modal-lg">
             <div className="modal-header">
               <div className="modal-title">
                 <Users size={20} color="var(--brand-purple)" />
-                Enquiry Details (#{selectedEnquiry.id})
+                Submission Details (#{selectedSubmission.id})
               </div>
               <button onClick={() => setIsViewModalOpen(false)} className="modal-close-btn">
                 <X size={20} />
@@ -290,44 +290,44 @@ const ContactSubmissions = () => {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
                   <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '4px' }}>Customer Name</div>
-                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{selectedEnquiry.name}</div>
-                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{selectedEnquiry.company}</div>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{selectedSubmission.name}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginTop: '2px' }}>{selectedSubmission.company}</div>
                 </div>
 
                 <div style={{ background: '#F8FAFC', padding: '16px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
                   <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '4px' }}>Permit Scope</div>
-                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--brand-purple)' }}>{selectedEnquiry.serviceNeeded}</div>
+                  <div style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--brand-purple)' }}>{selectedSubmission.serviceNeeded}</div>
                 </div>
               </div>
 
               <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', fontSize: '0.9rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Mail size={16} color="var(--brand-purple)" />
-                  <a href={`mailto:${selectedEnquiry.email}`} style={{ color: 'var(--brand-blue)', fontWeight: 600 }}>{selectedEnquiry.email}</a>
+                  <a href={`mailto:${selectedSubmission.email}`} style={{ color: 'var(--brand-blue)', fontWeight: 600 }}>{selectedSubmission.email}</a>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <Phone size={16} color="var(--brand-emerald)" />
-                  <span style={{ fontWeight: 600 }}>{selectedEnquiry.phone}</span>
+                  <span style={{ fontWeight: 600 }}>{selectedSubmission.phone}</span>
                 </div>
               </div>
 
               <div className="form-group">
-                <label className="form-label">Client Message / Consultation Request</label>
+                <label className="form-label">Client Message / Contact Inquiry</label>
                 <div style={{ 
                   background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '20px', 
                   borderRadius: '12px', color: 'var(--text-primary)', fontSize: '0.95rem', lineHeight: 1.6 
                 }}>
-                  {selectedEnquiry.message || 'No message provided.'}
+                  {selectedSubmission.message || 'No message provided.'}
                 </div>
               </div>
 
-              {selectedEnquiry.attachments && (
+              {selectedSubmission.attachments && (
                 <div className="form-group" style={{ marginTop: '16px' }}>
                   <label className="form-label">Attachments</label>
                   <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '8px' }}>
                     {(() => {
                       try {
-                        const urls = typeof selectedEnquiry.attachments === 'string' ? JSON.parse(selectedEnquiry.attachments) : selectedEnquiry.attachments;
+                        const urls = typeof selectedSubmission.attachments === 'string' ? JSON.parse(selectedSubmission.attachments) : selectedSubmission.attachments;
                         return Array.isArray(urls) ? urls.map((url, i) => (
                           <a key={i} href={url} download target="_blank" rel="noreferrer" style={{
                             display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -350,22 +350,22 @@ const ContactSubmissions = () => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-secondary)' }}>Status:</span>
                   <button 
-                    onClick={() => handleUpdateStatus(selectedEnquiry.id, 'New')}
-                    className={`badge ${selectedEnquiry.status === 'New' ? 'badge-danger' : 'badge-inactive'}`}
+                    onClick={() => handleUpdateStatus(selectedSubmission.id, 'New')}
+                    className={`badge ${selectedSubmission.status === 'New' ? 'badge-danger' : 'badge-inactive'}`}
                     style={{ cursor: 'pointer', border: 'none' }}
                   >
                     New
                   </button>
                   <button 
-                    onClick={() => handleUpdateStatus(selectedEnquiry.id, 'In Progress')}
-                    className={`badge ${selectedEnquiry.status === 'In Progress' ? 'badge-warning' : 'badge-inactive'}`}
+                    onClick={() => handleUpdateStatus(selectedSubmission.id, 'In Progress')}
+                    className={`badge ${selectedSubmission.status === 'In Progress' ? 'badge-warning' : 'badge-inactive'}`}
                     style={{ cursor: 'pointer', border: 'none' }}
                   >
                     In Progress
                   </button>
                   <button 
-                    onClick={() => handleUpdateStatus(selectedEnquiry.id, 'Resolved')}
-                    className={`badge ${selectedEnquiry.status === 'Resolved' ? 'badge-active' : 'badge-inactive'}`}
+                    onClick={() => handleUpdateStatus(selectedSubmission.id, 'Resolved')}
+                    className={`badge ${selectedSubmission.status === 'Resolved' ? 'badge-active' : 'badge-inactive'}`}
                     style={{ cursor: 'pointer', border: 'none' }}
                   >
                     Resolved
@@ -374,7 +374,7 @@ const ContactSubmissions = () => {
 
                 <div style={{ display: 'flex', gap: '10px' }}>
                   <a 
-                    href={`https://wa.me/${selectedEnquiry.phone.replace(/[^0-9]/g, '')}`} 
+                    href={`https://wa.me/${selectedSubmission.phone.replace(/[^0-9]/g, '')}`} 
                     target="_blank" 
                     rel="noreferrer"
                     className="btn btn-secondary btn-sm"
@@ -383,7 +383,7 @@ const ContactSubmissions = () => {
                     <MessageSquare size={14} /> WhatsApp Reply
                   </a>
                   <a 
-                    href={`mailto:${selectedEnquiry.email}?subject=AULA Permits Consultation Follow-up`} 
+                    href={`mailto:${selectedSubmission.email}?subject=AULA Permits Contact Inquiry Follow-up`} 
                     className="btn btn-primary btn-sm"
                   >
                     <Mail size={14} /> Email Client
@@ -402,13 +402,13 @@ const ContactSubmissions = () => {
       )}
 
       {/* DELETE CONFIRMATION MODAL */}
-      {isDeleteModalOpen && enquiryToDelete && (
+      {isDeleteModalOpen && submissionToDelete && (
         <div className="modal-backdrop">
           <div className="modal-dialog modal-sm">
             <div className="modal-header">
               <div className="modal-title" style={{ color: '#DC2626' }}>
                 <AlertCircle size={20} color="#DC2626" />
-                Delete Enquiry
+                Delete Submission
               </div>
               <button onClick={() => setIsDeleteModalOpen(false)} className="modal-close-btn">
                 <X size={20} />
@@ -416,7 +416,7 @@ const ContactSubmissions = () => {
             </div>
             <div className="modal-body">
               <p style={{ color: 'var(--text-primary)', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                Are you sure you want to delete enquiry from <strong>"{enquiryToDelete.name}"</strong>?
+                Are you sure you want to delete submission from <strong>"{submissionToDelete.name}"</strong>?
               </p>
             </div>
             <div className="modal-footer">

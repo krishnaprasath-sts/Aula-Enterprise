@@ -3,6 +3,7 @@ import { ArrowUpRight, ShieldCheck } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
 import FadeUp from '../common/FadeUp';
 import TextReveal from '../common/TextReveal';
+import { fetchApi } from '../../config/api';
 
 
 
@@ -13,8 +14,7 @@ const PermitTypes = () => {
   const [permitCategories, setPermitCategories] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/permit-types')
-      .then(res => res.json())
+    fetchApi('/permit-types')
       .then(data => {
         if (Array.isArray(data)) {
           // Filter out inactive permits and sort by order_index

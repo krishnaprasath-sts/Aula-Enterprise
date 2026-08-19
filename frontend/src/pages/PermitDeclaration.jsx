@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet-async';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, ChevronDown, ArrowRight, Send } from 'lucide-react';
@@ -108,6 +109,10 @@ const PermitDeclaration = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Permit Declaration Process | AULA Permits</title>
+        <meta name="description" content="Understand how we fast-track your Singapore customs permit declarations and trade compliance smoothly." />
+      </Helmet>
       <div style={{ paddingTop: '7rem', width: '100%', overflowX: 'clip' }}>
 
         {/* Page Hero */}

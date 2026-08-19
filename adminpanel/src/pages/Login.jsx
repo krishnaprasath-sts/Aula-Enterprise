@@ -5,8 +5,8 @@ import { authApi, setToken, setCurrentUser } from '../services/api';
 import logo from '../assets/logo.png';
 
 const Login = () => {
-  const [email, setEmail] = useState('admin@aula.sg');
-  const [password, setPassword] = useState('Admin@123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -31,7 +31,7 @@ const Login = () => {
     } catch (err) {
       console.warn('Backend login attempt failed, trying local fallback:', err.message);
       // Fallback for seamless offline demo
-      if ((email === 'admin@aula.sg' || email === 'admin@admin.com') && (password === 'Admin@123' || password === 'admin123' || password === 'admin')) {
+      if ((email === 'admin@aula.sg') && (password === 'Admin@123')) {
         const dummyToken = 'dummy_jwt_token_' + Date.now();
         setToken(dummyToken);
         setCurrentUser({ name: 'AULA Master Admin', email: email, role: 'superadmin' });

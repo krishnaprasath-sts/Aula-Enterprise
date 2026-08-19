@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ArrowRight } from 'lucide-react';
 import ConsultationModal from '../components/common/ConsultationModal';
 import FadeUp from '../components/common/FadeUp';
 import TextReveal from '../components/common/TextReveal';
 import LeadCTA from '../components/home/LeadCTA';
-import logisticImg from '../assets/logistic.jpg';
+import { fetchApi } from '../config/api';
+
+const logisticImg = '/assets/logistic.jpg';
 
 const Services = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,13 +17,12 @@ const Services = () => {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/services');
-        const data = await response.json();
+        const data = await fetchApi('/services');
         if (isMounted) {
-          const activeServices = data.filter(s => s.status === 'Active');
+          const activeServices = Array.isArray(data) ? data.filter(s => s.status === 'Active') : [];
           setServices(activeServices);
         }
       } catch (error) {
@@ -29,13 +31,13 @@ const Services = () => {
         if (isMounted) setIsLoading(false);
       }
     };
-    
+
     // Initial fetch
     fetchServices();
-    
+
     // Poll every 5 seconds for live updates
     const intervalId = setInterval(fetchServices, 5000);
-    
+
     // Also fetch immediately when user switches back to this tab
     window.addEventListener('focus', fetchServices);
 
@@ -48,12 +50,16 @@ const Services = () => {
 
   return (
     <>
-      <div style={{ paddingTop: '7rem', width: '100%', overflowX: 'clip' }}>
+      <Helmet>
+        <title>Our Services | AULA Permits Singapore</title>
+        <meta name="description" content="Explore our comprehensive customs declaration and trade compliance services including Import, Export, GST, and Transhipment permits." />
+      </Helmet>
+      <div style={{ width: '100%', overflowX: 'clip' }}>
 
         {/* Page Hero with Logistics Background */}
-        <section style={{
+        <section className="services-page-hero" style={{
           position: 'relative',
-          padding: '6.5rem 0',
+          padding: '11.5rem 0 6.5rem',
           backgroundImage: `linear-gradient(rgba(11, 18, 32, 0.85), rgba(11, 18, 32, 0.88)), url(${logisticImg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
@@ -84,7 +90,7 @@ const Services = () => {
             {isLoading ? (
               <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-secondary)' }}>Loading services...</div>
             ) : (
-              <div style={{
+              <div className="services-list-grid" style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
                 gap: '2.5rem'
@@ -114,7 +120,7 @@ const Services = () => {
                             <img src={service.image} alt={service.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }} className="service-img-hover" />
                           </div>
                         )}
-                        
+
                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
                           <h3 style={{ fontSize: '1.25rem', color: 'var(--dark-navy)', fontWeight: 700, margin: 0 }}>
                             {service.title}
@@ -124,7 +130,7 @@ const Services = () => {
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: 1.65, marginBottom: '1.5rem' }}>
                           {service.shortDesc}
                         </p>
-                        
+
                         {/* Render processing time instead of missing details array */}
                         {service.processingTime && (
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)' }}>

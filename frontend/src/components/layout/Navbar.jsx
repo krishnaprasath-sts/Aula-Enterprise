@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ArrowRight, PhoneCall } from 'lucide-react';
+import { Menu, X, ArrowRight, PhoneCall, ChevronDown, ChevronRight, Plane, FlaskConical, Coffee, ShoppingCart, Utensils, Truck, Dna, Settings, Factory, Wind, Cpu } from 'lucide-react';
 import ConsultationModal from '../common/ConsultationModal';
+
+const INDUSTRIES = [
+  { name: 'Aerospace', icon: Plane, path: '/industries/aerospace' },
+  { name: 'Chemicals Customs', icon: FlaskConical, path: '/industries/chemicals' },
+  { name: 'Drinks', icon: Coffee, path: '/industries/drinks' },
+  { name: 'FMCG', icon: ShoppingCart, path: '/industries/fmcg' },
+  { name: 'Food', icon: Utensils, path: '/industries/food' },
+  { name: 'Freight Forwarding & Logistics', icon: Truck, path: '/industries/logistics' },
+  { name: 'Life Sciences', icon: Dna, path: '/industries/life-sciences' },
+  { name: 'Manufacturing', icon: Settings, path: '/industries/manufacturing' },
+  { name: 'Oil & Gas', icon: Factory, path: '/industries/oil-and-gas' },
+  { name: 'Renewables', icon: Wind, path: '/industries/renewables' },
+  { name: 'Semiconductor', icon: Cpu, path: '/industries/semiconductor' }
+];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -20,16 +36,16 @@ const Navbar = () => {
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'About', path: '/about' },
-    { label: 'Permit Declaration', path: '/permit-declaration' },
+    { label: 'About Us', path: '/about' },
     { label: 'Services', path: '/services' },
-    // { label: 'Blog', path: '/blog' },
-    { label: 'Contact', path: '/contact' }
+    { label: 'Industries Served', path: '#', hasDropdown: true, isIndustries: true },
+    { label: 'Join AULA', path: '/join-aula', isJoinAula: true },
+    { label: 'Contact Us', path: '/contact' }
   ];
 
-  const isHome = location.pathname === '/';
+  const isDarkHeroPage = location.pathname === '/' || location.pathname === '/join-aula' || location.pathname === '/services';
   const isSolid = isScrolled || mobileMenuOpen;
-  const textColor = (isHome && !isSolid) ? '#FFFFFF' : 'var(--dark-navy)';
+  const textColor = (isDarkHeroPage && !isSolid) ? '#FFFFFF' : 'var(--dark-navy)';
 
   return (
     <>
@@ -55,13 +71,13 @@ const Navbar = () => {
         }}
       >
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          
+
           {/* Logo */}
           <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-start' }}>
             <Link to="/" className="interactive" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <img 
-                src="/src/assets/logo 2.png" 
-                alt="AULA Permits" 
+              <img
+                src="/assets/logo 2.png"
+                alt="AULA Permits"
                 style={{
                   width: isSolid ? '56px' : '84px',
                   height: isSolid ? '56px' : '84px',
@@ -74,39 +90,113 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav style={{ display: 'none', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
+          <nav style={{ display: 'none', alignItems: 'center', gap: '2rem', height: '100%' }} className="desktop-nav">
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="interactive nav-link"
-                  style={{
-                    position: 'relative',
-                    fontFamily: 'var(--font-heading)',
-                    fontSize: '0.92rem',
-                    fontWeight: isActive ? 600 : 500,
-                    color: isActive ? 'var(--brand-blue)' : textColor,
-                    padding: '0.4rem 0',
-                    transition: 'color 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.3s ease'
-                  }}
+                <div
+                  key={item.label}
+                  style={{ position: 'relative', height: '100%', display: 'flex', alignItems: 'center' }}
+                  onMouseEnter={() => item.hasDropdown && setActiveDropdown(item.label)}
+                  onMouseLeave={() => setActiveDropdown(null)}
                 >
-                  {item.label}
-                  {isActive && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        bottom: -4,
-                        left: 0,
-                        right: 0,
-                        height: '2px',
-                        backgroundColor: 'var(--brand-blue)',
-                        borderRadius: '2px'
-                      }}
-                    />
+                  <Link
+                    to={item.path}
+                    className="interactive nav-link"
+                    style={{
+                      position: 'relative',
+                      fontFamily: 'var(--font-heading)',
+                      fontSize: '0.92rem',
+                      fontWeight: isActive ? 700 : 600,
+                      color: isActive ? 'var(--brand-blue)' : textColor,
+                      padding: '0.4rem 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'color 0.6s cubic-bezier(0.22, 1, 0.36, 1)'
+                    }}
+                  >
+                    {item.label}
+                    {item.hasDropdown && <ChevronDown size={14} style={{ marginTop: '2px' }} />}
+                    
+                    {isActive && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: -4,
+                          left: 0,
+                          right: 0,
+                          height: '2px',
+                          backgroundColor: 'var(--brand-blue)',
+                          borderRadius: '2px'
+                        }}
+                      />
+                    )}
+                  </Link>
+                  
+                  {/* Dropdown Menu for Industries Served */}
+                  {item.isIndustries && (
+                    <AnimatePresence>
+                      {activeDropdown === item.label && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          transition={{ duration: 0.2 }}
+                          style={{
+                            position: 'absolute',
+                            top: '100%',
+                            left: '-10%', /* Align roughly with the text */
+                            width: '320px',
+                            background: '#FFFFFF',
+                            borderRadius: '12px',
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.05)',
+                            border: '1px solid #E2E8F0',
+                            padding: '0.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            zIndex: 200,
+                            marginTop: '1.2rem'
+                          }}
+                        >
+                          {/* Invisible hover bridge to prevent menu from closing when mouse moves between navbar and menu */}
+                          <div style={{ position: 'absolute', top: '-1.5rem', left: 0, right: 0, height: '1.5rem' }} />
+                          
+                          {/* Active Top Border accent */}
+                          <div style={{ position: 'absolute', top: -1, left: '20%', width: '40px', height: '3px', background: 'var(--brand-blue)', borderRadius: '3px 3px 0 0' }} />
+
+                          {INDUSTRIES.map((industry, index) => (
+                            <Link 
+                              key={index} 
+                              to={industry.path}
+                              style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '0.85rem 1rem',
+                                color: 'var(--dark-navy)',
+                                textDecoration: 'none',
+                                borderRadius: '8px',
+                                transition: 'all 0.2s',
+                                fontWeight: 600,
+                                fontSize: '0.9rem',
+                                borderBottom: index < INDUSTRIES.length - 1 ? '1px solid #F1F5F9' : 'none'
+                              }}
+                              onMouseEnter={(e) => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.color = 'var(--brand-blue)'; }}
+                              onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--dark-navy)'; }}
+                            >
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <industry.icon size={18} style={{ color: 'var(--brand-blue)' }} />
+                                {industry.name}
+                              </div>
+                              <ChevronRight size={14} style={{ color: '#94A3B8' }} />
+                            </Link>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   )}
-                </Link>
+                </div>
               );
             })}
           </nav>
@@ -118,9 +208,9 @@ const Navbar = () => {
               <button
                 onClick={() => setModalOpen(true)}
                 className="btn-primary"
-                style={{ padding: '0.75rem 1.4rem', fontSize: '0.9rem' }}
+                style={{ padding: '0.75rem 1.4rem', fontSize: '0.9rem', textTransform: 'uppercase', fontWeight: 700 }}
               >
-                Get a Consultation <ArrowRight size={16} />
+                APPLY PERMIT
               </button>
             </div>
 
@@ -182,9 +272,9 @@ const Navbar = () => {
           >
             {/* Drawer Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-              <img 
-                src="/src/assets/logo 2.png" 
-                alt="AULA Permits" 
+              <img
+                src="/assets/logo 2.png"
+                alt="AULA Permits"
                 style={{
                   width: '64px',
                   height: '64px',
@@ -213,6 +303,64 @@ const Navbar = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
+                if (item.hasDropdown) {
+                  return (
+                    <div key={item.label} style={{ borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                      <button
+                        onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          fontFamily: 'var(--font-heading)',
+                          fontSize: '1.5rem',
+                          fontWeight: 500,
+                          color: 'var(--dark-navy)',
+                          padding: '1rem 0',
+                          backgroundColor: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                          textAlign: 'left'
+                        }}
+                      >
+                        {item.label}
+                        <ChevronDown size={20} style={{ transform: mobileDropdownOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.25s ease' }} />
+                      </button>
+                      
+                      <AnimatePresence>
+                        {mobileDropdownOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            style={{ overflow: 'hidden', paddingLeft: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem', paddingBottom: '1rem' }}
+                          >
+                            {INDUSTRIES.map((industry, index) => (
+                              <Link
+                                key={index}
+                                to={industry.path}
+                                onClick={() => setMobileMenuOpen(false)}
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '10px',
+                                  color: 'var(--text-secondary)',
+                                  fontSize: '1.1rem',
+                                  fontWeight: 500,
+                                  padding: '0.5rem 0'
+                                }}
+                              >
+                                <industry.icon size={16} style={{ color: 'var(--brand-blue)' }} />
+                                {industry.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                }
                 return (
                   <Link
                     key={item.path}

@@ -17,7 +17,7 @@ const LeadCTA = ({
     <>
       <section style={{ padding: '8rem 0', backgroundColor: 'var(--bg-white)', position: 'relative', overflow: 'hidden' }}>
         <div className="container">
-          <div style={{
+          <div className="lead-cta-card" style={{
             backgroundColor: 'var(--dark-navy)',
             borderRadius: '24px',
             position: 'relative',
@@ -37,7 +37,7 @@ const LeadCTA = ({
             }} />
 
             {/* Left Content */}
-            <div style={{ padding: '5rem 4rem', zIndex: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div className="lead-cta-content" style={{ padding: '5rem 4rem', zIndex: 10, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <FadeUp delay={0.1}>
                 <TextReveal
                   text={title}
