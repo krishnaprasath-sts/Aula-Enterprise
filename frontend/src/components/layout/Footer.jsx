@@ -44,6 +44,7 @@ const Footer = () => {
     { label: 'About Us', path: '/about' },
     { label: 'Permit Declaration', path: '/permit-declaration' },
     { label: 'Services', path: '/services' },
+    { label: 'Join AULA (Careers)', path: '/join-aula' },
     { label: 'Contact Us', path: '/contact' }
   ];
 

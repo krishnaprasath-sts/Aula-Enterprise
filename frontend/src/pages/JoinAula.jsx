@@ -8,9 +8,34 @@ import { fetchApi } from '../config/api';
 
 const heroBg = '/assets/ship.png';
 
+const DEFAULT_JOBS = [
+  {
+    id: 1,
+    title: 'Business Development Executive',
+    department: 'Business Development',
+    location: 'Singapore',
+    employment_type: 'Full-Time',
+    description: 'Drive growth and acquire corporate accounts across Singapore manufacturing, aerospace, biomedical, and logistics sectors for customs clearance services.',
+    requirements: 'Diploma/Degree in Business, Logistics, Supply Chain, Sales or related field preferred\nExperience in B2B sales, logistics, freight forwarding, customs or trade services is an advantage\nStrong communication, presentation and negotiation skills\nAbility to generate leads through calls, WhatsApp, email, networking and client meetings',
+    responsibilities: 'Identify and develop new B2B business opportunities\nIntroduce AULA Permits\' customs permit declaration services to potential clients\nBuild and maintain long-term customer relationships\nFollow up website enquiries, WhatsApp enquiries, emails and leads',
+    status: 'Open'
+  },
+  {
+    id: 2,
+    title: 'Declarant Officer',
+    department: 'Permit Operations',
+    location: 'Singapore',
+    employment_type: 'Full-Time',
+    description: 'Prepare, process, and declare Singapore TradeNet customs permits with zero errors and rapid turnaround.',
+    requirements: 'Must have passed the relevant Singapore Customs Competency / Declarant examination and hold the required certification\nExperience in Singapore customs permit declaration is preferred\nKnowledge of Import, Export, Transhipment, GST and controlled-goods permits\nGood understanding of invoices, packing lists and supporting trade documents',
+    responsibilities: 'Prepare and process Singapore customs permit declarations\nVerify invoices, packing lists and supporting documents\nFollow up on permit status, amendments and shipment-related requirements\nCoordinate with customers and logistics partners',
+    status: 'Open'
+  }
+];
+
 const JoinAula = () => {
-  const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState(DEFAULT_JOBS);
+  const [loading, setLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [expandedJobId, setExpandedJobId] = useState(null);
 
@@ -18,13 +43,11 @@ const JoinAula = () => {
     const fetchJobs = async () => {
       try {
         const data = await fetchApi('/jobs');
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setJobs(data);
         }
       } catch (err) {
-        console.error('Error fetching jobs:', err);
-      } finally {
-        setLoading(false);
+        console.warn('Jobs fetch error:', err);
       }
     };
     fetchJobs();
