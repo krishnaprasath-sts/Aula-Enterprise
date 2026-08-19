@@ -34,8 +34,8 @@ app.post('/api/upload', upload.single('mediaFile'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
-  // Return the public URL for the uploaded file
-  const fileUrl = `http://localhost:5000/uploads/${req.file.filename}`;
+  // Return clean relative path for uploads
+  const fileUrl = `/uploads/${req.file.filename}`;
   res.json({ url: fileUrl });
 });
 
@@ -43,7 +43,7 @@ app.post('/api/upload-multiple', upload.array('mediaFiles', 50), (req, res) => {
   if (!req.files || req.files.length === 0) {
     return res.status(400).json({ error: 'No files uploaded' });
   }
-  const fileUrls = req.files.map(file => `http://localhost:5000/uploads/${file.filename}`);
+  const fileUrls = req.files.map(file => `/uploads/${file.filename}`);
   res.json({ urls: fileUrls });
 });
 
@@ -245,17 +245,17 @@ const initDb = async () => {
 // In-Memory store for fast fallback
 const memoryStore = {
   permitTypes: [
-    { id: 1, code: 'IN', title: 'Import Permit', description: 'Required for bringing commercial goods into Singapore customs territory, verifying GST, duties, and controlling agency permits.', image: '/src/assets/import.jpg', order_index: 1, status: 'Active' },
-    { id: 2, code: 'OUT', title: 'Export Permit', description: 'Official authorization for outbound shipments, strategic items, re-exports, or outward processed goods leaving Singapore.', image: '/src/assets/export.jpg', order_index: 2, status: 'Active' },
-    { id: 3, code: 'GST', title: 'GST Permit', description: 'Goods and Services Tax declaration, exemption filings, temporary import relief, and MES scheme reporting.', image: '/src/assets/gst.jpg', order_index: 3, status: 'Active' },
-    { id: 4, code: 'TR', title: 'Transhipment Permit', description: 'Documentation for cargo moving through Singapore ports to third-country destinations without entering local commerce.', image: '/src/assets/transhipment.jpg', order_index: 4, status: 'Active' },
-    { id: 5, code: 'STR', title: 'Strategic Goods Permit', description: 'Strict compliance for dual-use technology, military hardware, or controlled items under Strategic Goods Control Act.', image: '/src/assets/strategic goods image.png', order_index: 5, status: 'Active' },
-    { id: 6, code: 'COO', title: 'Certificate of Origin', description: 'Preferential & Non-Preferential COO documentation under Singapore Free Trade Agreements (FTAs).', image: '/src/assets/Certificate of Origin (COO) Support.png', order_index: 6, status: 'Active' },
-    { id: 7, code: 'SO', title: 'Shut-Out Permit', description: 'Declarations for export cargo cancelled, rejected at port terminals, or returned to local warehouses.', image: '/src/assets/shut out permit image.png', order_index: 7, status: 'Active' },
-    { id: 8, code: 'HC', title: 'Hand Carry Permit', description: 'Customs declaration for high-value components, jewelry, or prototypes carried via passenger baggage.', image: '/src/assets/hand carry permit image.png', order_index: 8, status: 'Active' },
-    { id: 9, code: 'RX', title: 'Re-Export Permit', description: 'Permits for foreign-origin goods imported temporarily for warehousing or re-packing prior to export.', image: '/src/assets/re-export permit image.jpg', order_index: 9, status: 'Active' },
-    { id: 10, code: 'MES', title: 'Major Exporter Scheme', description: 'IRAS-approved GST suspension management for major Singapore export and manufacturing enterprises.', image: '/src/assets/major export permit image.jpg', order_index: 10, status: 'Active' },
-    { id: 11, code: 'TMD', title: 'Transport Mode Declarations', description: 'Customized permits for Sea Freight, Air Cargo, Land Trucking (Causeway/Tuas), and Parcel Post.', image: '/src/assets/transportation image.png', order_index: 11, status: 'Active' }
+    { id: 1, code: 'IN', title: 'Import Permit', description: 'Required for bringing commercial goods into Singapore customs territory, verifying GST, duties, and controlling agency permits.', image: '/assets/import.jpg', order_index: 1, status: 'Active' },
+    { id: 2, code: 'OUT', title: 'Export Permit', description: 'Official authorization for outbound shipments, strategic items, re-exports, or outward processed goods leaving Singapore.', image: '/assets/export.jpg', order_index: 2, status: 'Active' },
+    { id: 3, code: 'GST', title: 'GST Permit', description: 'Goods and Services Tax declaration, exemption filings, temporary import relief, and MES scheme reporting.', image: '/assets/gst.jpg', order_index: 3, status: 'Active' },
+    { id: 4, code: 'TR', title: 'Transhipment Permit', description: 'Documentation for cargo moving through Singapore ports to third-country destinations without entering local commerce.', image: '/assets/transhipment.jpg', order_index: 4, status: 'Active' },
+    { id: 5, code: 'STR', title: 'Strategic Goods Permit', description: 'Strict compliance for dual-use technology, military hardware, or controlled items under Strategic Goods Control Act.', image: '/assets/strategic goods image.png', order_index: 5, status: 'Active' },
+    { id: 6, code: 'COO', title: 'Certificate of Origin', description: 'Preferential & Non-Preferential COO documentation under Singapore Free Trade Agreements (FTAs).', image: '/assets/Certificate of Origin (COO) Support.png', order_index: 6, status: 'Active' },
+    { id: 7, code: 'SO', title: 'Shut-Out Permit', description: 'Declarations for export cargo cancelled, rejected at port terminals, or returned to local warehouses.', image: '/assets/shut out permit image.png', order_index: 7, status: 'Active' },
+    { id: 8, code: 'HC', title: 'Hand Carry Permit', description: 'Customs declaration for high-value components, jewelry, or prototypes carried via passenger baggage.', image: '/assets/hand carry permit image.png', order_index: 8, status: 'Active' },
+    { id: 9, code: 'RX', title: 'Re-Export Permit', description: 'Permits for foreign-origin goods imported temporarily for warehousing or re-packing prior to export.', image: '/assets/re-export permit image.jpg', order_index: 9, status: 'Active' },
+    { id: 10, code: 'MES', title: 'Major Exporter Scheme', description: 'IRAS-approved GST suspension management for major Singapore export and manufacturing enterprises.', image: '/assets/major export permit image.jpg', order_index: 10, status: 'Active' },
+    { id: 11, code: 'TMD', title: 'Transport Mode Declarations', description: 'Customized permits for Sea Freight, Air Cargo, Land Trucking (Causeway/Tuas), and Parcel Post.', image: '/assets/transportation image.png', order_index: 11, status: 'Active' }
   ],
   heroBanners: [
     {
@@ -265,7 +265,7 @@ const memoryStore = {
       ctaText: 'Schedule Consultation',
       ctaLink: 'modal',
       mediaType: 'video',
-      mediaUrl: '/src/assets/home.mp4',
+      mediaUrl: '/assets/home.mp4',
       trustRate: '100%',
       trustLabel: 'Customs Compliance Rate',
       status: 'Active',
@@ -278,7 +278,7 @@ const memoryStore = {
       ctaText: 'Apply Permits',
       ctaLink: 'modal',
       mediaType: 'image',
-      mediaUrl: '/src/assets/hero.png',
+      mediaUrl: '/assets/hero.png',
       trustRate: '99.8%',
       trustLabel: 'Same-Day Permit Clearance',
       status: 'Inactive',
@@ -292,7 +292,7 @@ const memoryStore = {
       category: 'Compliance',
       shortDesc: 'Expert representation for Singapore Customs tariff classification rulings, valuation disputes, and advance ruling applications.',
       iconName: 'Shield',
-      image: '/src/assets/service_1_customs.png',
+      image: '/assets/service_1_customs.png',
       processingTime: 'Same Day',
       order_index: 1,
       status: 'Active'
@@ -303,7 +303,7 @@ const memoryStore = {
       category: 'Permits',
       shortDesc: 'End-to-end import documentation for sea freight, air cargo, and land checkpoints entering Singapore customs territory.',
       iconName: 'Anchor',
-      image: '/src/assets/service_2_import.png',
+      image: '/assets/service_2_import.png',
       processingTime: 'Within 2 Hours',
       order_index: 2,
       status: 'Active'
@@ -314,7 +314,7 @@ const memoryStore = {
       category: 'Permits',
       shortDesc: 'Fast declaration of outbound shipments, strategic items, re-exports, or outward processing trade.',
       iconName: 'Truck',
-      image: '/src/assets/service_3_export.png',
+      image: '/assets/service_3_export.png',
       processingTime: 'Within 2 Hours',
       order_index: 3,
       status: 'Active'
@@ -325,7 +325,7 @@ const memoryStore = {
       category: 'Documentation',
       shortDesc: 'Meticulous audit of Commercial Invoices, Packing Lists, Certificates of Analysis, and Transport Documents prior to filing.',
       iconName: 'FileCheck',
-      image: '/src/assets/service_4_docs.png',
+      image: '/assets/service_4_docs.png',
       processingTime: '2-4 Hours',
       order_index: 4,
       status: 'Active'
@@ -336,7 +336,7 @@ const memoryStore = {
       category: 'Compliance',
       shortDesc: 'Comprehensive review of your company’s trade operations to maintain IRAS Major Exporter Scheme (MES) eligibility.',
       iconName: 'Layers',
-      image: '/src/assets/service_5_compliance.png',
+      image: '/assets/service_5_compliance.png',
       processingTime: '24-48 Hours',
       order_index: 5,
       status: 'Active'
@@ -347,7 +347,7 @@ const memoryStore = {
       category: 'Documentation',
       shortDesc: 'Application and issuance of Preferential and Non-Preferential COOs under Singapore’s extensive network of FTAs.',
       iconName: 'Globe',
-      image: '/src/assets/service_7_coo.png',
+      image: '/assets/service_7_coo.png',
       processingTime: 'Within 4 Hours',
       order_index: 6,
       status: 'Active'
