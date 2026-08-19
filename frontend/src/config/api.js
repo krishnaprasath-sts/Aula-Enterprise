@@ -1,16 +1,12 @@
 export const API_HOST_URL = import.meta.env.VITE_API_HOST || 'http://aulaapi.saitechnosolutions.com';
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || `${API_HOST_URL}/api`;
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (typeof window !== 'undefined' && (window.location.hostname.includes('saitechnosolutions.com') || window.location.protocol === 'https:') ? '/api' : `${API_HOST_URL}/api`);
 
 // Automatically converts any localhost:5000, /src/assets/ or relative upload URLs to live domain
 export const sanitizeData = (data) => {
   if (!data) return data;
   if (typeof data === 'string') {
     let sanitized = data.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
-                        .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL)
                         .replace(/\/src\/assets\//g, '/assets/');
-    if (sanitized.startsWith('/uploads/')) {
-      sanitized = `${API_HOST_URL}${sanitized}`;
-    }
     return sanitized;
   }
   if (Array.isArray(data)) {
