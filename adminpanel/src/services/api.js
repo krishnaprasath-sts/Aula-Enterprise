@@ -1,5 +1,5 @@
 export const API_HOST_URL = import.meta.env.VITE_API_HOST || 'http://aulaapi.saitechnosolutions.com';
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (typeof window !== 'undefined' && (window.location.hostname.includes('saitechnosolutions.com') || window.location.protocol === 'https:') ? '/api' : `${API_HOST_URL}/api`);
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || `${API_HOST_URL}/api`;
 
 // Helper to retrieve the current JWT token
 export const getToken = () => localStorage.getItem('aula_jwt_token');
