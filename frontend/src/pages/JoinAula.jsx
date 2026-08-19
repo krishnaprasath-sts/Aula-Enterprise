@@ -18,7 +18,9 @@ const JoinAula = () => {
     const fetchJobs = async () => {
       try {
         const data = await fetchApi('/jobs');
-        setJobs(data || []);
+        if (Array.isArray(data)) {
+          setJobs(data);
+        }
       } catch (err) {
         console.error('Error fetching jobs:', err);
       } finally {
@@ -41,13 +43,10 @@ const JoinAula = () => {
         position: 'relative',
         overflow: 'hidden'
       }}>
-      <Helmet>
-        <title>Careers | AULA Permits Singapore</title>
-        <meta name="description" content="Join our dynamic team of trade compliance experts and customs declarants. View open positions at AULA Permits Singapore." />
-      </Helmet>
-        {/* Abstract Background Elements */}
-        <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '40%', height: '80%', background: 'radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', filter: 'blur(40px)', zIndex: 1 }}></div>
-        <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '50%', height: '60%', background: 'radial-gradient(circle, rgba(14,165,233,0.1) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', filter: 'blur(40px)', zIndex: 1 }}></div>
+        <Helmet>
+          <title>Careers | AULA Permits Singapore</title>
+          <meta name="description" content="Join our dynamic team of trade compliance experts and customs declarants. View open positions at AULA Permits Singapore." />
+        </Helmet>
         
         <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
           <FadeUp>
@@ -123,7 +122,7 @@ const JoinAula = () => {
                           <h3 style={{ fontSize: '1.5rem', color: 'var(--dark-navy)', margin: 0 }}>{job.title}</h3>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#ECFDF5', color: '#059669', padding: '0.3rem 0.6rem', borderRadius: '100px', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.5px' }}>
                             <span style={{ width: '6px', height: '6px', background: '#10B981', borderRadius: '50%', display: 'inline-block' }}></span>
-                            {job.status.toUpperCase()}
+                            {(job.status || 'OPEN').toUpperCase()}
                           </div>
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', color: '#64748B', fontSize: '0.95rem', marginBottom: expandedJobId === job.id ? '1.5rem' : '0' }}>
@@ -150,42 +149,42 @@ const JoinAula = () => {
                     {expandedJobId === job.id && (
                       <div style={{ paddingTop: '1.5rem', borderTop: '1px solid #F1F5F9', marginTop: '1.5rem', animation: 'modalFadeIn 0.3s ease-out' }}>
                         {job.description && (
-                      <p style={{ color: '#475569', lineHeight: 1.6, marginBottom: '2rem' }}>{job.description}</p>
-                    )}
+                          <p style={{ color: '#475569', lineHeight: 1.6, marginBottom: '2rem' }}>{job.description}</p>
+                        )}
 
-                    <div className="job-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
-                      {job.requirements && (
-                        <div>
-                          <h4 style={{ color: 'var(--dark-navy)', marginBottom: '1rem', fontSize: '1.05rem' }}>Requirements:</h4>
-                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            {job.requirements.split('\n').filter(r => r.trim()).map((req, i) => (
-                              <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                <Check size={16} style={{ color: 'var(--brand-blue)', flexShrink: 0, marginTop: '2px' }} />
-                                <span>{req}</span>
-                              </li>
-                            ))}
-                          </ul>
+                        <div className="job-detail-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+                          {job.requirements && (
+                            <div>
+                              <h4 style={{ color: 'var(--dark-navy)', marginBottom: '1rem', fontSize: '1.05rem' }}>Requirements:</h4>
+                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {job.requirements.split('\n').filter(r => r.trim()).map((req, i) => (
+                                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                                    <Check size={16} style={{ color: 'var(--brand-blue)', flexShrink: 0, marginTop: '2px' }} />
+                                    <span>{req}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                          
+                          {job.responsibilities && (
+                            <div>
+                              <h4 style={{ color: 'var(--dark-navy)', marginBottom: '1rem', fontSize: '1.05rem' }}>Responsibilities:</h4>
+                              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                {job.responsibilities.split('\n').filter(r => r.trim()).map((res, i) => (
+                                  <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>
+                                    <ChevronRight size={16} style={{ color: 'var(--brand-blue)', flexShrink: 0, marginTop: '2px' }} />
+                                    <span>{res}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      
-                      {job.responsibilities && (
-                        <div>
-                          <h4 style={{ color: 'var(--dark-navy)', marginBottom: '1rem', fontSize: '1.05rem' }}>Responsibilities:</h4>
-                          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                            {job.responsibilities.split('\n').filter(r => r.trim()).map((res, i) => (
-                              <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', color: '#475569', fontSize: '0.95rem', lineHeight: 1.5 }}>
-                                <ChevronRight size={16} style={{ color: 'var(--brand-blue)', flexShrink: 0, marginTop: '2px' }} />
-                                <span>{res}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </FadeUp>
+                </FadeUp>
               ))}
             </div>
           )}

@@ -1,12 +1,13 @@
 export const API_HOST_URL = import.meta.env.VITE_API_HOST || 'http://aulaapi.saitechnosolutions.com';
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || `${API_HOST_URL}/api`;
 
-// Automatically converts any localhost:5000 or http URLs to live domain
+// Automatically converts any localhost:5000, /src/assets/ or relative upload URLs to live domain
 export const sanitizeData = (data) => {
   if (!data) return data;
   if (typeof data === 'string') {
     let sanitized = data.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
-                        .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL);
+                        .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL)
+                        .replace(/\/src\/assets\//g, '/assets/');
     if (sanitized.startsWith('/uploads/')) {
       sanitized = `${API_HOST_URL}${sanitized}`;
     }
@@ -27,16 +28,13 @@ export const sanitizeData = (data) => {
 
 export const formatImageUrl = (url) => {
   if (!url) return '';
-  if (url.includes('localhost:5000')) {
-    url = url.replace(/http:\/\/localhost:5000/g, API_HOST_URL);
-  } else if (url.includes('http://aulaapi.saitechnosolutions.com')) {
-    url = url.replace(/http:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL);
+  let formatted = url.replace(/http:\/\/localhost:5000/g, API_HOST_URL)
+                     .replace(/https?:\/\/aulaapi\.saitechnosolutions\.com/g, API_HOST_URL)
+                     .replace(/\/src\/assets\//g, '/assets/');
+  if (formatted.startsWith('/uploads/')) {
+    return `${API_HOST_URL}${formatted}`;
   }
-  
-  if (url.startsWith('/uploads/')) {
-    return `${API_HOST_URL}${url}`;
-  }
-  return url;
+  return formatted;
 };
 
 // Resilient API fetch using the single dynamic base URL

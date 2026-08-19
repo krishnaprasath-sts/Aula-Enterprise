@@ -5,21 +5,34 @@ import FadeUp from '../common/FadeUp';
 import TextReveal from '../common/TextReveal';
 import { fetchApi } from '../../config/api';
 
-
+const DEFAULT_PERMITS = [
+  { id: 1, title: 'Import Permit', description: 'Required for bringing commercial goods into Singapore customs territory, verifying GST, duties, and controlling agency permits.', image: '/assets/import.jpg', status: 'Active' },
+  { id: 2, title: 'Export Permit', description: 'Official authorization for outbound shipments, strategic items, re-exports, or outward processed goods leaving Singapore.', image: '/assets/export.jpg', status: 'Active' },
+  { id: 3, title: 'GST Permit', description: 'Goods and Services Tax declaration, exemption filings, temporary import relief, and MES scheme reporting.', image: '/assets/gst.jpg', status: 'Active' },
+  { id: 4, title: 'Transhipment Permit', description: 'Documentation for cargo moving through Singapore ports to third-country destinations without entering local commerce.', image: '/assets/transhipment.jpg', status: 'Active' },
+  { id: 5, title: 'Strategic Goods Permit', description: 'Strict compliance for dual-use technology, military hardware, or controlled items under Strategic Goods Control Act.', image: '/assets/strategic goods image.png', status: 'Active' },
+  { id: 6, title: 'Certificate of Origin', description: 'Preferential & Non-Preferential COO documentation under Singapore Free Trade Agreements (FTAs).', image: '/assets/Certificate of Origin (COO) Support.png', status: 'Active' },
+  { id: 7, title: 'Shut-Out Permit', description: 'Declarations for export cargo cancelled, rejected at port terminals, or returned to local warehouses.', image: '/assets/shut out permit image.png', status: 'Active' },
+  { id: 8, title: 'Hand Carry Permit', description: 'Customs declaration for high-value components, jewelry, or prototypes carried via passenger baggage.', image: '/assets/hand carry permit image.png', status: 'Active' },
+  { id: 9, title: 'Re-Export Permit', description: 'Permits for foreign-origin goods imported temporarily for warehousing or re-packing prior to export.', image: '/assets/re-export permit image.jpg', status: 'Active' },
+  { id: 10, title: 'Major Exporter Scheme', description: 'IRAS-approved GST suspension management for major Singapore export and manufacturing enterprises.', image: '/assets/major export permit image.jpg', status: 'Active' },
+  { id: 11, title: 'Transport Mode Declarations', description: 'Customized permits for Sea Freight, Air Cargo, Land Trucking (Causeway/Tuas), and Parcel Post.', image: '/assets/transportation image.png', status: 'Active' }
+];
 
 const PermitTypes = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPermit, setSelectedPermit] = useState('');
 
-  const [permitCategories, setPermitCategories] = useState([]);
+  const [permitCategories, setPermitCategories] = useState(DEFAULT_PERMITS);
 
   useEffect(() => {
     fetchApi('/permit-types')
       .then(data => {
-        if (Array.isArray(data)) {
-          // Filter out inactive permits and sort by order_index
+        if (Array.isArray(data) && data.length > 0) {
           const activePermits = data.filter(p => p.status === 'Active');
-          setPermitCategories(activePermits);
+          if (activePermits.length > 0) {
+            setPermitCategories(activePermits);
+          }
         }
       })
       .catch(err => console.error("Error fetching permit types:", err));

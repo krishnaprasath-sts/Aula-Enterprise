@@ -9,11 +9,20 @@ import { fetchApi } from '../config/api';
 
 const logisticImg = '/assets/logistic.jpg';
 
+const DEFAULT_SERVICES = [
+  { id: 1, title: 'Customs Support & Rulings', category: 'Compliance', shortDesc: 'Expert representation for Singapore Customs tariff classification rulings, valuation disputes, and advance ruling applications.', image: '/assets/service_1_customs.png', processingTime: 'Same Day', status: 'Active' },
+  { id: 2, title: 'Import Clearance Services', category: 'Permits', shortDesc: 'End-to-end import documentation for sea freight, air cargo, and land checkpoints entering Singapore customs territory.', image: '/assets/service_2_import.png', processingTime: 'Within 2 Hours', status: 'Active' },
+  { id: 3, title: 'Export Documentation & Permits', category: 'Permits', shortDesc: 'Fast declaration of outbound shipments, strategic items, re-exports, or outward processing trade.', image: '/assets/service_3_export.png', processingTime: 'Within 2 Hours', status: 'Active' },
+  { id: 4, title: 'Trade Documentation Verification', category: 'Documentation', shortDesc: 'Meticulous audit of Commercial Invoices, Packing Lists, Certificates of Analysis, and Transport Documents prior to filing.', image: '/assets/service_4_docs.png', processingTime: '2-4 Hours', status: 'Active' },
+  { id: 5, title: 'Compliance & Scheme Audits', category: 'Compliance', shortDesc: 'Comprehensive review of your company’s trade operations to maintain IRAS Major Exporter Scheme (MES) eligibility.', image: '/assets/service_5_compliance.png', processingTime: '24-48 Hours', status: 'Active' },
+  { id: 6, title: 'Certificate of Origin (COO) Support', category: 'Documentation', shortDesc: 'Application and issuance of Preferential and Non-Preferential COOs under Singapore’s extensive network of FTAs.', image: '/assets/service_7_coo.png', processingTime: 'Within 4 Hours', status: 'Active' }
+];
+
 const Services = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState('');
-  const [services, setServices] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [services, setServices] = useState(DEFAULT_SERVICES);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -21,9 +30,11 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const data = await fetchApi('/services');
-        if (isMounted) {
-          const activeServices = Array.isArray(data) ? data.filter(s => s.status === 'Active') : [];
-          setServices(activeServices);
+        if (isMounted && Array.isArray(data) && data.length > 0) {
+          const activeServices = data.filter(s => s.status === 'Active');
+          if (activeServices.length > 0) {
+            setServices(activeServices);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch services:', error);

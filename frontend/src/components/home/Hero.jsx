@@ -32,15 +32,7 @@ const DEFAULT_HERO = {
 const Hero = () => {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
-  const [heroData, setHeroData] = useState(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const saved = localStorage.getItem('aula_active_hero');
-        if (saved) return JSON.parse(saved);
-      } catch (e) {}
-    }
-    return DEFAULT_HERO;
-  });
+  const [heroData, setHeroData] = useState(DEFAULT_HERO);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -51,7 +43,7 @@ const Hero = () => {
           const active = data.find(b => b.status === 'Active') || data[0];
           if (active) {
             const activeMediaUrl = getSafeMediaUrl(active.mediaUrl, active.mediaType || 'video');
-            const updatedHero = {
+            setHeroData({
               title: active.title || DEFAULT_HERO.title,
               subtitle: active.subtitle || DEFAULT_HERO.subtitle,
               ctaText: active.ctaText || DEFAULT_HERO.ctaText,
@@ -60,28 +52,11 @@ const Hero = () => {
               mediaUrl: activeMediaUrl,
               trustRate: active.trustRate || DEFAULT_HERO.trustRate,
               trustLabel: active.trustLabel || DEFAULT_HERO.trustLabel,
-            };
-            setHeroData(updatedHero);
-            try {
-              localStorage.setItem('aula_active_hero', JSON.stringify(updatedHero));
-            } catch (e) {}
+            });
           }
         }
       } catch (err) {
-        // Fallback to local storage
-        const saved = localStorage.getItem('aula_active_hero') || localStorage.getItem('aula_hero_banners');
-        if (saved) {
-          try {
-            const parsed = JSON.parse(saved);
-            const active = Array.isArray(parsed) ? (parsed.find(b => b.status === 'Active') || parsed[0]) : parsed;
-            if (active) {
-              setHeroData({
-                ...active,
-                mediaUrl: getSafeMediaUrl(active.mediaUrl, active.mediaType || 'video')
-              });
-            }
-          } catch (e) { }
-        }
+        console.warn('Hero banners API error:', err);
       }
     };
 
