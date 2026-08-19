@@ -103,6 +103,7 @@ const PermitTypes = () => {
                         <img
                           src={permit.image || permit.img}
                           alt={permit.title}
+                          onError={(e) => { e.currentTarget.src = '/assets/import.jpg'; }}
                           style={{
                             width: '100%',
                             height: '100%',

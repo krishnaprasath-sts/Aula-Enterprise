@@ -292,7 +292,7 @@ const memoryStore = {
       category: 'Compliance',
       shortDesc: 'Expert representation for Singapore Customs tariff classification rulings, valuation disputes, and advance ruling applications.',
       iconName: 'Shield',
-      image: '/assets/service_1_customs.png',
+      image: '/assets/customs.jpg',
       processingTime: 'Same Day',
       order_index: 1,
       status: 'Active'
@@ -303,7 +303,7 @@ const memoryStore = {
       category: 'Permits',
       shortDesc: 'End-to-end import documentation for sea freight, air cargo, and land checkpoints entering Singapore customs territory.',
       iconName: 'Anchor',
-      image: '/assets/service_2_import.png',
+      image: '/assets/import.jpg',
       processingTime: 'Within 2 Hours',
       order_index: 2,
       status: 'Active'
@@ -314,7 +314,7 @@ const memoryStore = {
       category: 'Permits',
       shortDesc: 'Fast declaration of outbound shipments, strategic items, re-exports, or outward processing trade.',
       iconName: 'Truck',
-      image: '/assets/service_3_export.png',
+      image: '/assets/export.jpg',
       processingTime: 'Within 2 Hours',
       order_index: 3,
       status: 'Active'
@@ -325,7 +325,7 @@ const memoryStore = {
       category: 'Documentation',
       shortDesc: 'Meticulous audit of Commercial Invoices, Packing Lists, Certificates of Analysis, and Transport Documents prior to filing.',
       iconName: 'FileCheck',
-      image: '/assets/service_4_docs.png',
+      image: '/assets/Trade Documentation Verification image.png',
       processingTime: '2-4 Hours',
       order_index: 4,
       status: 'Active'
@@ -336,7 +336,7 @@ const memoryStore = {
       category: 'Compliance',
       shortDesc: 'Comprehensive review of your company’s trade operations to maintain IRAS Major Exporter Scheme (MES) eligibility.',
       iconName: 'Layers',
-      image: '/assets/service_5_compliance.png',
+      image: '/assets/Compliance & Scheme Audits.jpg',
       processingTime: '24-48 Hours',
       order_index: 5,
       status: 'Active'
@@ -347,7 +347,7 @@ const memoryStore = {
       category: 'Documentation',
       shortDesc: 'Application and issuance of Preferential and Non-Preferential COOs under Singapore’s extensive network of FTAs.',
       iconName: 'Globe',
-      image: '/assets/service_7_coo.png',
+      image: '/assets/Certificate of Origin (COO) Support.png',
       processingTime: 'Within 4 Hours',
       order_index: 6,
       status: 'Active'

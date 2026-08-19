@@ -10,12 +10,12 @@ import { fetchApi } from '../config/api';
 const logisticImg = '/assets/logistic.jpg';
 
 const DEFAULT_SERVICES = [
-  { id: 1, title: 'Customs Support & Rulings', category: 'Compliance', shortDesc: 'Expert representation for Singapore Customs tariff classification rulings, valuation disputes, and advance ruling applications.', image: '/assets/service_1_customs.png', processingTime: 'Same Day', status: 'Active' },
-  { id: 2, title: 'Import Clearance Services', category: 'Permits', shortDesc: 'End-to-end import documentation for sea freight, air cargo, and land checkpoints entering Singapore customs territory.', image: '/assets/service_2_import.png', processingTime: 'Within 2 Hours', status: 'Active' },
-  { id: 3, title: 'Export Documentation & Permits', category: 'Permits', shortDesc: 'Fast declaration of outbound shipments, strategic items, re-exports, or outward processing trade.', image: '/assets/service_3_export.png', processingTime: 'Within 2 Hours', status: 'Active' },
-  { id: 4, title: 'Trade Documentation Verification', category: 'Documentation', shortDesc: 'Meticulous audit of Commercial Invoices, Packing Lists, Certificates of Analysis, and Transport Documents prior to filing.', image: '/assets/service_4_docs.png', processingTime: '2-4 Hours', status: 'Active' },
-  { id: 5, title: 'Compliance & Scheme Audits', category: 'Compliance', shortDesc: 'Comprehensive review of your company’s trade operations to maintain IRAS Major Exporter Scheme (MES) eligibility.', image: '/assets/service_5_compliance.png', processingTime: '24-48 Hours', status: 'Active' },
-  { id: 6, title: 'Certificate of Origin (COO) Support', category: 'Documentation', shortDesc: 'Application and issuance of Preferential and Non-Preferential COOs under Singapore’s extensive network of FTAs.', image: '/assets/service_7_coo.png', processingTime: 'Within 4 Hours', status: 'Active' }
+  { id: 1, title: 'Customs Support & Rulings', category: 'Compliance', shortDesc: 'Expert representation for Singapore Customs tariff classification rulings, valuation disputes, and advance ruling applications.', image: '/assets/customs.jpg', processingTime: 'Same Day', status: 'Active' },
+  { id: 2, title: 'Import Clearance Services', category: 'Permits', shortDesc: 'End-to-end import documentation for sea freight, air cargo, and land checkpoints entering Singapore customs territory.', image: '/assets/import.jpg', processingTime: 'Within 2 Hours', status: 'Active' },
+  { id: 3, title: 'Export Documentation & Permits', category: 'Permits', shortDesc: 'Fast declaration of outbound shipments, strategic items, re-exports, or outward processing trade.', image: '/assets/export.jpg', processingTime: 'Within 2 Hours', status: 'Active' },
+  { id: 4, title: 'Trade Documentation Verification', category: 'Documentation', shortDesc: 'Meticulous audit of Commercial Invoices, Packing Lists, Certificates of Analysis, and Transport Documents prior to filing.', image: '/assets/Trade Documentation Verification image.png', processingTime: '2-4 Hours', status: 'Active' },
+  { id: 5, title: 'Compliance & Scheme Audits', category: 'Compliance', shortDesc: 'Comprehensive review of your company’s trade operations to maintain IRAS Major Exporter Scheme (MES) eligibility.', image: '/assets/Compliance & Scheme Audits.jpg', processingTime: '24-48 Hours', status: 'Active' },
+  { id: 6, title: 'Certificate of Origin (COO) Support', category: 'Documentation', shortDesc: 'Application and issuance of Preferential and Non-Preferential COOs under Singapore’s extensive network of FTAs.', image: '/assets/Certificate of Origin (COO) Support.png', processingTime: 'Within 4 Hours', status: 'Active' }
 ];
 
 const Services = () => {
@@ -128,7 +128,13 @@ const Services = () => {
                             overflow: 'hidden',
                             boxShadow: 'var(--shadow-sm)'
                           }}>
-                            <img src={service.image} alt={service.title} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }} className="service-img-hover" />
+                            <img
+                              src={service.image}
+                              alt={service.title}
+                              onError={(e) => { e.currentTarget.src = '/assets/customs.jpg'; }}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.3s ease' }}
+                              className="service-img-hover"
+                            />
                           </div>
                         )}
 

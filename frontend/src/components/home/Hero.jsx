@@ -6,14 +6,13 @@ import ConsultationModal from '../common/ConsultationModal';
 import TextReveal from '../common/TextReveal';
 import { fetchApi, API_HOST_URL } from '../../config/api';
 
-const DEFAULT_VIDEO_URL = `${API_HOST_URL}/uploads/1786702952606-334235189.mp4`;
-
 const getSafeMediaUrl = (url, mediaType = 'video') => {
   if (!url) {
-    return mediaType === 'image' ? '/assets/hero.png' : DEFAULT_VIDEO_URL;
+    return mediaType === 'image' ? '/assets/hero.png' : '/assets/home3.mp4';
   }
-  if (url === '/assets/home.mp4' || url.endsWith('/home.mp4') || url === 'home.mp4') {
-    return DEFAULT_VIDEO_URL;
+  // Convert /src/assets/ to /assets/ for production
+  if (url.includes('/src/assets/')) {
+    url = url.replace('/src/assets/', '/assets/');
   }
   return url;
 };
@@ -24,7 +23,7 @@ const DEFAULT_HERO = {
   ctaText: 'Apply Permit',
   ctaLink: '/contact',
   mediaType: 'video',
-  mediaUrl: DEFAULT_VIDEO_URL,
+  mediaUrl: '/assets/home3.mp4',
   trustRate: '100%',
   trustLabel: 'Customs Compliance Rate'
 };
@@ -148,6 +147,8 @@ const Hero = () => {
               className="hero-media"
             >
               <source src={currentMediaUrl} type="video/mp4" />
+              <source src="/assets/home3.mp4" type="video/mp4" />
+              <source src="/assets/home.mp4" type="video/mp4" />
             </video>
           )}
         </div>
