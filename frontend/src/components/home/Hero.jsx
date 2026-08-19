@@ -84,23 +84,26 @@ const Hero = () => {
       };
 
       vid.addEventListener('canplay', playVideo, { once: true });
+      vid.addEventListener('loadeddata', playVideo, { once: true });
       
-      // Fallback for mobile Low Power Mode: start video on first touch/scroll
-      const handleTouchStart = () => {
+      // Fallback for mobile Low Power Mode: start video on first interaction
+      const handleUserInteraction = () => {
         if (vid.paused) {
           vid.play().catch(() => {});
         }
       };
-      window.addEventListener('touchstart', handleTouchStart, { once: true, passive: true });
-      window.addEventListener('scroll', handleTouchStart, { once: true, passive: true });
+      window.addEventListener('touchstart', handleUserInteraction, { once: true, passive: true });
+      window.addEventListener('scroll', handleUserInteraction, { once: true, passive: true });
+      window.addEventListener('click', handleUserInteraction, { once: true, passive: true });
 
-      vid.load();
       playVideo();
 
       return () => {
         vid.removeEventListener('canplay', playVideo);
-        window.removeEventListener('touchstart', handleTouchStart);
-        window.removeEventListener('scroll', handleTouchStart);
+        vid.removeEventListener('loadeddata', playVideo);
+        window.removeEventListener('touchstart', handleUserInteraction);
+        window.removeEventListener('scroll', handleUserInteraction);
+        window.removeEventListener('click', handleUserInteraction);
       };
     }
   }, [heroData.mediaUrl, heroData.mediaType]);
@@ -113,7 +116,6 @@ const Hero = () => {
   };
 
   const currentMediaUrl = getSafeMediaUrl(heroData.mediaUrl, heroData.mediaType || 'video');
-  const relativeUploadUrl = currentMediaUrl.includes('/uploads/') ? `/uploads/${currentMediaUrl.split('/uploads/')[1]}` : null;
 
   return (
     <>
@@ -136,16 +138,15 @@ const Hero = () => {
             <video
               ref={videoRef}
               key={currentMediaUrl}
-              src={currentMediaUrl}
               autoPlay
               loop
               muted
               playsInline
               webkit-playsinline="true"
               preload="auto"
+              poster="/assets/hero.png"
               className="hero-media"
             >
-              {relativeUploadUrl && <source src={relativeUploadUrl} type="video/mp4" />}
               <source src={currentMediaUrl} type="video/mp4" />
             </video>
           )}
