@@ -108,8 +108,18 @@ const Hero = () => {
           position: 'absolute',
           top: 0, left: 0, right: 0, bottom: 0,
           zIndex: 1,
-          overflow: 'hidden'
+          overflow: 'hidden',
+          backgroundColor: '#0B1220'
         }}>
+          {/* Contrast Overlay */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'linear-gradient(180deg, rgba(11, 18, 32, 0.6) 0%, rgba(11, 18, 32, 0.85) 100%)',
+            zIndex: 2,
+            pointerEvents: 'none'
+          }} />
+
           {heroData.mediaType === 'image' ? (
             heroData.mediaUrl ? (
               <img
@@ -117,6 +127,7 @@ const Hero = () => {
                 src={heroData.mediaUrl}
                 alt="Hero Background"
                 className="hero-media"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
               />
             ) : null
           ) : (
@@ -129,8 +140,9 @@ const Hero = () => {
                 muted
                 playsInline
                 webkit-playsinline="true"
-                preload="auto"
+                preload="metadata"
                 className="hero-media"
+                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
               >
                 <source src={heroData.mediaUrl} type="video/mp4" />
               </video>
