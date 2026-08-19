@@ -223,7 +223,7 @@ const Navbar = () => {
           </nav>
 
           {/* Right Section */}
-          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '0.75rem' }}>
             {/* Desktop Right CTA */}
             <div style={{ display: 'none', alignItems: 'center', gap: '1rem' }} className="desktop-nav">
               <button
@@ -234,6 +234,23 @@ const Navbar = () => {
                 APPLY PERMIT
               </button>
             </div>
+
+            {/* Mobile Header Apply Permit CTA */}
+            <button
+              onClick={() => setModalOpen(true)}
+              className="btn-primary mobile-cta-btn"
+              style={{
+                padding: '0.5rem 0.85rem',
+                fontSize: '0.75rem',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                borderRadius: '8px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              APPLY PERMIT
+            </button>
 
             {/* Mobile Hamburger Toggle */}
             <button
@@ -405,12 +422,15 @@ const Navbar = () => {
 
             <div style={{ paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <button
+                type="button"
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  setModalOpen(true);
+                  setTimeout(() => {
+                    setModalOpen(true);
+                  }, 80);
                 }}
                 className="btn-primary"
-                style={{ width: '100%', justifyContent: 'center', padding: '1.2rem', fontSize: '1.1rem' }}
+                style={{ width: '100%', justifyContent: 'center', padding: '1.2rem', fontSize: '1.1rem', fontWeight: 700, textTransform: 'uppercase' }}
               >
                 APPLY PERMIT <ArrowRight size={18} />
               </button>
@@ -427,6 +447,12 @@ const Navbar = () => {
         @media (min-width: 992px) {
           .desktop-nav { display: flex !important; }
           .mobile-toggle { display: none !important; }
+          .mobile-cta-btn { display: none !important; }
+        }
+        @media (max-width: 991px) {
+          .desktop-nav { display: none !important; }
+          .mobile-toggle { display: flex !important; }
+          .mobile-cta-btn { display: inline-flex !important; }
         }
       `}</style>
     </>
